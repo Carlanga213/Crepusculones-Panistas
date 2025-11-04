@@ -1,5 +1,5 @@
 # Crepusculones-Panistas
-Integrantes:
+Integrantes: <br>
 Carlos Ariel Rubio Espinosa - 752504 <br>
 Rogelio Sosa Luna - 751476 <br>
 Ana Kamila Carrasco Torres - 750395 <br>
