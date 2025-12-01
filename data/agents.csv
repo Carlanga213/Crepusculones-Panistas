@@ -1,0 +1,21 @@
+agent_id,name,reports_to
+agent_001,Jefe Supremo,
+agent_002,David Fernandez,agent_001
+agent_003,Javier Fernandez,agent_002
+agent_004,Isabel Diaz,agent_001
+agent_005,Luis Fernandez,agent_001
+agent_006,Roberto Diaz,agent_001
+agent_007,Elena Sanchez,agent_001
+agent_008,Fernando Fernandez,agent_004
+agent_009,Roberto Lopez,agent_002
+agent_010,Lucia Garcia,agent_005
+agent_011,Lucia Martinez,agent_001
+agent_012,Isabel Rodriguez,agent_001
+agent_013,Miguel Torres,agent_001
+agent_014,Elena Perez,agent_001
+agent_015,Jorge Gomez,agent_014
+agent_016,Miguel Gomez,agent_015
+agent_017,Ana Torres,agent_015
+agent_018,Roberto Martinez,agent_008
+agent_019,Luis Perez,agent_009
+agent_020,Jorge Perez,agent_001
