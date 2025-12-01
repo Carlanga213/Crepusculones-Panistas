@@ -6,7 +6,7 @@ import pydgraph
 import connect
 from Dgraph import manager as dgraph_manager
 # Importamos el esquema de Cassandra que proporcionaste
-import schema 
+from Cassandra import schema 
 from Cassandra import manager as cassandra_manager
 
 DATA_DIR = 'data'
