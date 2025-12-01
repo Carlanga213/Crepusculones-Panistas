@@ -1,4 +1,4 @@
-import Mongo.connect as connect
+import connect as connect
 import json
 import os
 import sys
@@ -121,10 +121,14 @@ def menu_dgraph():
 # --- MENÚ MONGODB (Integrado desde menu.py) ---
 def menu_mongo():
     # Verifica que exista el archivo cliente de mongo
-    if not os.path.exists("client.py"):
-        print("\n[ADVERTENCIA] No se encontró 'client.py' en el directorio actual.")
-        print("Asegúrate de que el script de conexión a Mongo esté presente.")
+    mongo_script = os.path.join("Mongo", "client.py")
+
+    # Verifica que exista el archivo en la nueva ubicación
+    if not os.path.exists(mongo_script):
+        print(f"\n[ERROR] No se encontró '{mongo_script}'.")
+        print("Asegúrate de haber movido el archivo 'client.py' a la carpeta 'Mongo'.")
         input("Presiona Enter para continuar...")
+        return # Regresa al menú principal para evitar errores
 
     while True:
         print("\n" + "="*50)
