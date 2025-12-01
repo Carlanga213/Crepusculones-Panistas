@@ -1,0 +1,44 @@
+[
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10001a001" },
+    "nombre": "Ana Torres",
+    "correo": "ana.torres@iteso.mx",
+    "telefono": "3312345678",
+    "empresa": "ITESO"
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10001a002" },
+    "nombre": "Rogelio Sosa",
+    "correo": "rogelio.sosa@intel.mx",
+    "telefono": "3315923332",
+    "empresa": "Intel"
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10001a003" },
+    "nombre": "Carlos Rubio",
+    "correo": "carlos.rubio@oracle.mx",
+    "telefono": "3314567890",
+    "empresa": "Oracle"
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10001a004" },
+    "nombre": "Kamila Carrasco",
+    "correo": "kamila.carrasco@gmail.com",
+    "telefono": "3319876543",
+    "empresa": "Google"
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10001a005" },
+    "nombre": "Emilio Gonzalez",
+    "correo": "emilio.gonzalez@apple.com",
+    "telefono": "3318765432",
+    "empresa": "Apple"
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10001a006" },
+    "nombre": "Victor Aguilar",
+    "correo": "victor.aguilar@xerox.com",
+    "telefono": "3317654321",
+    "empresa": "Xerox"
+  }
+]

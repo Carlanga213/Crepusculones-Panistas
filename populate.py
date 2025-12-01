@@ -3,7 +3,7 @@ import os
 import json
 import uuid
 import pydgraph
-import connect
+import Mongo.connect as connect
 from Dgraph import manager as dgraph_manager
 from Cassandra import schema 
 from Cassandra import manager as cassandra_manager
