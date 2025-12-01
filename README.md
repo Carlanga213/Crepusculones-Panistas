@@ -42,3 +42,27 @@ python3 -m venv ./env
 #Instalar los requerimientos del proyecto
 pip install -r requirements.txt
 ```
+
+Inicializar las bases de datos (Cassandra, MongoDB, Dgraph) en docker:
+```bash
+#Crear espacio para Cassandra si no existe:
+docekr run --name cassandra-dev -p 9042:9042 -d cassandra:latest
+
+#Si ya tienes uno inicialo con el siguiente comando:
+docker start cassandra-dev
+
+#Crear espacio para MongoDB si no existe:
+docker run --name mongodb -p 27017:27017 -d mongo:latest
+
+#Si ya tienes uno inicialo con el siguiente comando:
+docker start mongodb
+
+#Crear espacio para Dgraph si no existe:
+docker run --name dgraph -p 8080:8080 -p 9080:9080 -d dgraph/standalone:latest
+
+#Si ya tienes uno inicialo con el siguiente comando:
+docker start dgraph
+
+#Si quieres descargar el GUI de dgraph es con el siguiente comando:
+docker run --name ratel -p 8000:8000 
+```
