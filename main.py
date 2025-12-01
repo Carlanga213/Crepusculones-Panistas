@@ -1,11 +1,77 @@
 import connect
 import json
-# Importamos el módulo desde la carpeta Dgraph
-from Dgraph import manager
+from Dgraph import manager as dgraph_manager
+from Cassandra import manager as cass_manager
 
 def print_json(data):
-    """Ayuda visual para imprimir respuestas JSON bonitas"""
-    print(json.dumps(data, indent=2, ensure_ascii=False))
+    print(json.dumps(data, indent=2, ensure_ascii=False, default=str))
+
+def menu_cassandra(session):
+    if not session:
+        print("!! Error: No hay conexión con Cassandra.")
+        return
+
+    while True:
+        print("\n" + "="*50)
+        print("      MÓDULO CASSANDRA - TRAZABILIDAD Y CHAT")
+        print("="*50)
+        print("1.  [Req 1] Nuevo Mensaje (Chat)")
+        print("2.  [Req 2] Ver Historial Chat Ticket")
+        print("3.  [Req 3] Cambiar Estado Ticket")
+        print("4.  [Req 4] Ver Historial Estados Ticket")
+        print("5.  [Req 5] Ver Estado Actual (Rápido)")
+        print("6.  [Req 6] Registrar Participación Agente")
+        print("7.  [Req 7] Consultar Participantes Ticket")
+        print("8.  [Req 8-9] Auditoría Diaria")
+        print("9.  [Req 10] Reporte Rendimiento Diario")
+        print("10. Volver")
+        
+        op = input("\nSeleccione una opción: ")
+        
+        if op == '1':
+            cass_manager.register_message(session, 
+                input("Ticket ID: "), input("Autor ID: "), input("Mensaje: "))
+            print(">> Mensaje guardado.")
+            
+        elif op == '2':
+            res = cass_manager.get_chat_history(session, input("Ticket ID: "))
+            print_json(res)
+            
+        elif op == '3':
+            cass_manager.update_ticket_status(session, 
+                input("Ticket ID: "), input("Nuevo Estado: "), 
+                input("Agente ID: "), input("Detalles: "))
+            print(">> Estado actualizado.")
+            
+        elif op == '4':
+            res = cass_manager.get_status_history(session, input("Ticket ID: "))
+            print_json(res)
+            
+        elif op == '5':
+            res = cass_manager.get_current_status(session, input("Ticket ID: "))
+            print(f">> Estado Actual: {res}")
+            
+        elif op == '6':
+            cass_manager.register_participation(session, 
+                input("Ticket ID: "), input("Agente ID: "), input("Acción: "))
+            print(">> Participación registrada.")
+            
+        elif op == '7':
+            res = cass_manager.get_participants(session, input("Ticket ID: "))
+            print_json(res)
+            
+        elif op == '8':
+            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            res = cass_manager.get_daily_audit(session, d if d else None)
+            print_json(res)
+
+        elif op == '9':
+            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            res = cass_manager.get_daily_performance(session, d if d else None)
+            print_json(res)
+            
+        elif op == '10':
+            break
 
 def menu_dgraph():
     # Establecer conexión
@@ -114,12 +180,16 @@ def menu_dgraph():
             print("Opción inválida.")
 
 def main_menu():
+    # Inicializar conexiones
+    dgraph_stub = connect.create_client_stub()
+    dgraph_client = connect.create_client(dgraph_stub)
+    cass_session = connect.create_cassandra_session()
+
     while True:
         print("\n" + "*"*50)
         print("   SISTEMA INTEGRAL - CREPUSCULONES PANISTAS")
         print("*"*50)
-        print("Seleccione la Base de Datos:")
-        print("1. MongoDB (Usuarios y Tickets)")
+        print("1. MongoDB (Usuarios y Tickets) [No disp]")
         print("2. Cassandra (Chat y Bitácoras)")
         print("3. Dgraph (Grafos y Relaciones)")
         print("4. Salir")
@@ -129,11 +199,18 @@ def main_menu():
         if opcion == '1':
             print(">> Módulo MongoDB no disponible aún.")
         elif opcion == '2':
-            print(">> Módulo Cassandra no disponible aún.")
+            menu_cassandra(cass_session)
         elif opcion == '3':
-            menu_dgraph()
+            # Asegúrate de importar menu_dgraph desde main.py original 
+            # o copiar la función aquí.
+            # menu_dgraph(dgraph_client) 
+            # *Para simplificar, asumo que mantienes tu función menu_dgraph original*
+            from main import menu_dgraph as run_dgraph_menu
+            run_dgraph_menu() 
         elif opcion == '4':
             print("Saliendo...")
+            dgraph_stub.close()
+            if cass_session: cass_session.shutdown()
             break
         else:
             print("Opción no válida.")
@@ -142,4 +219,4 @@ if __name__ == '__main__':
     try:
         main_menu()
     except KeyboardInterrupt:
-        print("\nPrograma terminado por el usuario.")
+        print("\nPrograma terminado.")
