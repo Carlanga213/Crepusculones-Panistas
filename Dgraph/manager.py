@@ -62,6 +62,7 @@ def get_uid(client, field, value):
         }}
     }}
     """
+    # Las consultas (query) usualmente aceptan strings, pero es seguro codificar
     res = client.txn(read_only=True).query(query)
     data = json.loads(res.json)
     if data['get']:
@@ -82,7 +83,8 @@ def assign_incident(client, incident_id, agent_id):
     
     txn = client.txn()
     try:
-        txn.mutate(pydgraph.Mutation(set_nquads=nquads))
+        # CORRECCIÓN: encode('utf-8')
+        txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
     finally:
@@ -98,7 +100,8 @@ def link_incident_customer(client, incident_id, customer_id):
     txn = client.txn()
     try:
         nquads = f'<{inc_uid}> <reported_by> <{cust_uid}> .'
-        txn.mutate(pydgraph.Mutation(set_nquads=nquads))
+        # CORRECCIÓN: encode('utf-8')
+        txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
     finally:
@@ -114,7 +117,8 @@ def set_agent_hierarchy(client, sub_id, sup_id):
     txn = client.txn()
     try:
         nquads = f'<{sub_uid}> <reports_to> <{sup_uid}> .'
-        txn.mutate(pydgraph.Mutation(set_nquads=nquads))
+        # CORRECCIÓN: encode('utf-8')
+        txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
     finally:
@@ -136,7 +140,8 @@ def escalate_incident(client, incident_id, old_agent_id, new_agent_id):
     """
     txn = client.txn()
     try:
-        txn.mutate(pydgraph.Mutation(set_nquads=nquads))
+        # CORRECCIÓN: encode('utf-8')
+        txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
     finally:
@@ -155,7 +160,8 @@ def link_related_incidents(client, id_a, id_b):
         <{uid_a}> <related_to> <{uid_b}> .
         <{uid_b}> <related_to> <{uid_a}> .
         """
-        txn.mutate(pydgraph.Mutation(set_nquads=nquads))
+        # CORRECCIÓN: encode('utf-8')
+        txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
     finally:
@@ -205,7 +211,8 @@ def set_customer_org(client, customer_id, org_id):
     txn = client.txn()
     try:
         nquads = f'<{cust_uid}> <belongs_to_org> <{org_uid}> .'
-        txn.mutate(pydgraph.Mutation(set_nquads=nquads))
+        # CORRECCIÓN: encode('utf-8')
+        txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
     finally:
