@@ -104,7 +104,8 @@ def menu_dgraph():
         if op == '1':
             inc = input("ID Incidencia: ")
             ag = input("ID Agente: ")
-            if manager.assign_incident(client, inc, ag):
+            # CORRECCIÓN: usar dgraph_manager en lugar de manager
+            if dgraph_manager.assign_incident(client, inc, ag):
                 print(">> Asignación exitosa.")
             else:
                 print(">> Error: IDs no encontrados.")
@@ -112,7 +113,7 @@ def menu_dgraph():
         elif op == '2':
             inc = input("ID Incidencia: ")
             cust = input("ID Cliente: ")
-            if manager.link_incident_customer(client, inc, cust):
+            if dgraph_manager.link_incident_customer(client, inc, cust):
                 print(">> Vinculación exitosa.")
             else:
                 print(">> Error: IDs no encontrados.")
@@ -120,7 +121,7 @@ def menu_dgraph():
         elif op == '3':
             sub = input("ID Agente Subordinado: ")
             sup = input("ID Agente Supervisor: ")
-            if manager.set_agent_hierarchy(client, sub, sup):
+            if dgraph_manager.set_agent_hierarchy(client, sub, sup):
                 print(">> Jerarquía actualizada.")
             else:
                 print(">> Error: Agentes no encontrados.")
@@ -129,7 +130,7 @@ def menu_dgraph():
             inc = input("ID Incidencia: ")
             old = input("ID Agente (Escalador): ")
             new = input("ID Agente (Destino): ")
-            if manager.escalate_incident(client, inc, old, new):
+            if dgraph_manager.escalate_incident(client, inc, old, new):
                 print(">> Escalación registrada correctamente.")
             else:
                 print(">> Error: Datos no encontrados.")
@@ -137,41 +138,41 @@ def menu_dgraph():
         elif op == '5':
             inc_a = input("ID Incidencia A: ")
             inc_b = input("ID Incidencia B: ")
-            if manager.link_related_incidents(client, inc_a, inc_b):
+            if dgraph_manager.link_related_incidents(client, inc_a, inc_b):
                 print(">> Incidencias relacionadas exitosamente.")
             else:
                 print(">> Error: Incidencias no encontradas.")
 
         elif op == '6':
             ag = input("ID Agente a consultar: ")
-            res = manager.get_agent_workload(client, ag)
+            res = dgraph_manager.get_agent_workload(client, ag)
             print_json(res)
 
         elif op == '7':
             cust = input("ID Cliente a consultar: ")
-            res = manager.get_customer_history(client, cust)
+            res = dgraph_manager.get_customer_history(client, cust)
             print_json(res)
 
         elif op == '8':
             cust = input("ID Cliente: ")
             org = input("ID Organización: ")
-            if manager.set_customer_org(client, cust, org):
+            if dgraph_manager.set_customer_org(client, cust, org):
                 print(">> Cliente asignado a organización.")
             else:
                 print(">> Error: IDs no encontrados.")
 
         elif op == '9':
             org = input("ID Organización a consultar: ")
-            res = manager.get_org_incidents(client, org)
+            res = dgraph_manager.get_org_incidents(client, org)
             print_json(res)
 
         elif op == '10':
             inc = input("ID Incidencia a auditar: ")
-            res = manager.get_traceability(client, inc)
+            res = dgraph_manager.get_traceability(client, inc)
             print_json(res)
 
         elif op == '11':
-            manager.set_schema(client)
+            dgraph_manager.set_schema(client)
 
         elif op == '12':
             stub.close()
