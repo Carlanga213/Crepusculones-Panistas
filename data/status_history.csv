@@ -1,0 +1,151 @@
+ticket_id,status,agent_id,details
+inc_0168,resuelto,agent_007,Cierre administrativo
+inc_0077,en_espera,agent_008,Reasignado por carga de trabajo
+inc_0016,resuelto,agent_016,Revisión inicial del caso
+inc_0168,cerrado,agent_008,Cierre administrativo
+inc_0036,abierto,agent_020,Cliente contactado por teléfono
+inc_0023,resuelto,agent_013,Reasignado por carga de trabajo
+inc_0052,en_espera,agent_020,Revisión inicial del caso
+inc_0089,cerrado,agent_013,Cliente contactado por teléfono
+inc_0022,abierto,agent_001,Cliente contactado por teléfono
+inc_0180,cerrado,agent_016,Cliente contactado por teléfono
+inc_0077,abierto,agent_012,Cliente contactado por teléfono
+inc_0023,cerrado,agent_013,Mantenimiento programado
+inc_0027,resuelto,agent_011,"Falsa alarma, sistema operativo"
+inc_0113,en_progreso,agent_020,Validación con el usuario final
+inc_0023,cerrado,agent_006,"Falsa alarma, sistema operativo"
+inc_0200,en_progreso,agent_019,Reasignado por carga de trabajo
+inc_0110,en_espera,agent_010,Cierre administrativo
+inc_0180,abierto,agent_005,Esperando respuesta del proveedor
+inc_0116,cerrado,agent_020,"Falsa alarma, sistema operativo"
+inc_0134,abierto,agent_018,Cliente contactado por teléfono
+inc_0193,resuelto,agent_012,"Falsa alarma, sistema operativo"
+inc_0079,en_espera,agent_008,Cliente contactado por teléfono
+inc_0130,abierto,agent_014,Cliente contactado por teléfono
+inc_0005,resuelto,agent_012,Esperando respuesta del proveedor
+inc_0082,abierto,agent_008,Validación con el usuario final
+inc_0013,cerrado,agent_014,Mantenimiento programado
+inc_0149,cerrado,agent_015,Solución aplicada exitosamente
+inc_0049,en_espera,agent_019,Mantenimiento programado
+inc_0192,en_espera,agent_005,Esperando respuesta del proveedor
+inc_0032,en_progreso,agent_016,Esperando respuesta del proveedor
+inc_0110,resuelto,agent_002,Cierre administrativo
+inc_0058,resuelto,agent_010,"Falsa alarma, sistema operativo"
+inc_0111,abierto,agent_020,Reasignado por carga de trabajo
+inc_0141,abierto,agent_009,"Falsa alarma, sistema operativo"
+inc_0092,abierto,agent_006,Reasignado por carga de trabajo
+inc_0009,en_progreso,agent_009,Solución aplicada exitosamente
+inc_0115,resuelto,agent_003,"Falsa alarma, sistema operativo"
+inc_0056,en_progreso,agent_007,"Falsa alarma, sistema operativo"
+inc_0174,en_espera,agent_013,Ticket creado automáticamente
+inc_0194,en_espera,agent_005,Reasignado por carga de trabajo
+inc_0011,abierto,agent_009,Mantenimiento programado
+inc_0113,en_espera,agent_019,Solución aplicada exitosamente
+inc_0186,resuelto,agent_019,Mantenimiento programado
+inc_0116,resuelto,agent_017,Ticket creado automáticamente
+inc_0057,abierto,agent_013,Esperando respuesta del proveedor
+inc_0018,en_progreso,agent_011,Validación con el usuario final
+inc_0116,en_progreso,agent_004,"Falsa alarma, sistema operativo"
+inc_0105,resuelto,agent_006,Reasignado por carga de trabajo
+inc_0123,resuelto,agent_010,Reasignado por carga de trabajo
+inc_0030,abierto,agent_004,Esperando respuesta del proveedor
+inc_0083,resuelto,agent_009,Revisión inicial del caso
+inc_0145,resuelto,agent_004,Ticket creado automáticamente
+inc_0055,en_espera,agent_013,Ticket creado automáticamente
+inc_0121,resuelto,agent_011,Ticket creado automáticamente
+inc_0154,cerrado,agent_002,"Falsa alarma, sistema operativo"
+inc_0027,en_espera,agent_003,Solución aplicada exitosamente
+inc_0013,resuelto,agent_017,Ticket creado automáticamente
+inc_0106,en_espera,agent_011,"Falsa alarma, sistema operativo"
+inc_0074,cerrado,agent_009,Reasignado por carga de trabajo
+inc_0155,resuelto,agent_010,Solución aplicada exitosamente
+inc_0106,cerrado,agent_016,Solución aplicada exitosamente
+inc_0071,en_progreso,agent_011,Esperando respuesta del proveedor
+inc_0153,resuelto,agent_007,"Falsa alarma, sistema operativo"
+inc_0054,resuelto,agent_007,Solución aplicada exitosamente
+inc_0054,abierto,agent_019,Solución aplicada exitosamente
+inc_0049,cerrado,agent_007,Ticket creado automáticamente
+inc_0097,en_progreso,agent_008,Cierre administrativo
+inc_0121,en_espera,agent_008,Revisión inicial del caso
+inc_0176,abierto,agent_019,Revisión inicial del caso
+inc_0108,en_progreso,agent_011,Mantenimiento programado
+inc_0185,en_espera,agent_016,"Falsa alarma, sistema operativo"
+inc_0163,en_espera,agent_006,Ticket creado automáticamente
+inc_0182,en_progreso,agent_011,Reasignado por carga de trabajo
+inc_0043,abierto,agent_008,Mantenimiento programado
+inc_0198,en_progreso,agent_009,Reasignado por carga de trabajo
+inc_0117,en_progreso,agent_003,"Falsa alarma, sistema operativo"
+inc_0195,cerrado,agent_011,Validación con el usuario final
+inc_0180,resuelto,agent_014,"Falsa alarma, sistema operativo"
+inc_0016,en_progreso,agent_017,Cliente contactado por teléfono
+inc_0120,resuelto,agent_003,Revisión inicial del caso
+inc_0006,en_espera,agent_001,Esperando respuesta del proveedor
+inc_0034,resuelto,agent_008,Esperando respuesta del proveedor
+inc_0124,abierto,agent_016,Esperando respuesta del proveedor
+inc_0093,resuelto,agent_016,"Falsa alarma, sistema operativo"
+inc_0020,en_espera,agent_019,Cierre administrativo
+inc_0171,resuelto,agent_019,Ticket creado automáticamente
+inc_0072,en_espera,agent_010,Validación con el usuario final
+inc_0075,en_progreso,agent_016,Solución aplicada exitosamente
+inc_0158,en_espera,agent_015,Esperando respuesta del proveedor
+inc_0077,en_progreso,agent_017,Validación con el usuario final
+inc_0099,en_espera,agent_003,Esperando respuesta del proveedor
+inc_0012,cerrado,agent_003,Revisión inicial del caso
+inc_0029,abierto,agent_015,Ticket creado automáticamente
+inc_0191,cerrado,agent_011,Reasignado por carga de trabajo
+inc_0115,en_progreso,agent_001,Revisión inicial del caso
+inc_0047,en_espera,agent_002,"Falsa alarma, sistema operativo"
+inc_0147,abierto,agent_011,Revisión inicial del caso
+inc_0014,cerrado,agent_010,Cliente contactado por teléfono
+inc_0011,en_espera,agent_012,Validación con el usuario final
+inc_0195,en_progreso,agent_001,Cierre administrativo
+inc_0153,resuelto,agent_017,Reasignado por carga de trabajo
+inc_0147,cerrado,agent_017,"Falsa alarma, sistema operativo"
+inc_0116,en_espera,agent_010,"Falsa alarma, sistema operativo"
+inc_0172,abierto,agent_017,Revisión inicial del caso
+inc_0156,en_progreso,agent_007,Mantenimiento programado
+inc_0121,en_espera,agent_004,Cierre administrativo
+inc_0059,resuelto,agent_008,Cierre administrativo
+inc_0110,cerrado,agent_020,Mantenimiento programado
+inc_0200,en_espera,agent_012,Ticket creado automáticamente
+inc_0085,en_espera,agent_013,Solución aplicada exitosamente
+inc_0184,en_progreso,agent_015,Revisión inicial del caso
+inc_0162,resuelto,agent_011,Mantenimiento programado
+inc_0065,resuelto,agent_011,Reasignado por carga de trabajo
+inc_0011,resuelto,agent_005,Solución aplicada exitosamente
+inc_0185,cerrado,agent_006,Cliente contactado por teléfono
+inc_0150,cerrado,agent_006,Reasignado por carga de trabajo
+inc_0016,en_progreso,agent_017,Esperando respuesta del proveedor
+inc_0168,resuelto,agent_006,Solución aplicada exitosamente
+inc_0168,resuelto,agent_015,Ticket creado automáticamente
+inc_0051,resuelto,agent_006,Cliente contactado por teléfono
+inc_0199,en_espera,agent_001,Cliente contactado por teléfono
+inc_0166,resuelto,agent_005,Validación con el usuario final
+inc_0025,en_espera,agent_017,Esperando respuesta del proveedor
+inc_0123,abierto,agent_018,Mantenimiento programado
+inc_0013,en_progreso,agent_016,Mantenimiento programado
+inc_0139,en_progreso,agent_010,Reasignado por carga de trabajo
+inc_0105,en_espera,agent_016,Cliente contactado por teléfono
+inc_0110,cerrado,agent_013,"Falsa alarma, sistema operativo"
+inc_0048,abierto,agent_007,Esperando respuesta del proveedor
+inc_0007,en_progreso,agent_009,Solución aplicada exitosamente
+inc_0137,en_progreso,agent_006,Validación con el usuario final
+inc_0030,abierto,agent_010,Solución aplicada exitosamente
+inc_0021,resuelto,agent_004,Mantenimiento programado
+inc_0139,en_progreso,agent_018,Reasignado por carga de trabajo
+inc_0114,resuelto,agent_011,Validación con el usuario final
+inc_0085,resuelto,agent_009,Reasignado por carga de trabajo
+inc_0132,en_progreso,agent_007,Ticket creado automáticamente
+inc_0078,en_progreso,agent_017,Esperando respuesta del proveedor
+inc_0092,resuelto,agent_015,Validación con el usuario final
+inc_0059,en_espera,agent_014,Mantenimiento programado
+inc_0088,cerrado,agent_020,Mantenimiento programado
+inc_0056,en_espera,agent_014,"Falsa alarma, sistema operativo"
+inc_0020,cerrado,agent_008,Mantenimiento programado
+inc_0066,cerrado,agent_006,Solución aplicada exitosamente
+inc_0116,abierto,agent_015,Cierre administrativo
+inc_0073,cerrado,agent_005,Ticket creado automáticamente
+inc_0003,en_progreso,agent_002,Cliente contactado por teléfono
+inc_0191,cerrado,agent_003,Mantenimiento programado
+inc_0095,en_espera,agent_014,Mantenimiento programado
+inc_0133,cerrado,agent_008,Reasignado por carga de trabajo
