@@ -1,0 +1,2 @@
+pydgraph
+cassandra-driver
