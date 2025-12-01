@@ -13,7 +13,7 @@ def create_schema(session):
     session.set_keyspace('helpdesk_system')
 
     # 2. Tabla: Mensajes de Chat por Ticket (Req 1, 2)
-    # PDF Pag 13: ticket_id (PK), fecha_evento (CK), autor, contenido
+    
     session.execute("""
         CREATE TABLE IF NOT EXISTS mensajes_ticket (
             ticket_id UUID,
@@ -25,7 +25,7 @@ def create_schema(session):
     """)
 
     # 3. Tabla: Historial de Estados (Req 3, 4, 5)
-    # PDF Pag 14: ticket_id (PK), fecha_cambio (CK), estado, operador..., detalles...
+    
     session.execute("""
         CREATE TABLE IF NOT EXISTS historial_estados (
             ticket_id UUID,
@@ -38,8 +38,7 @@ def create_schema(session):
     """)
 
     # 4. Tabla: Rendimiento de Operador (Req 10)
-    # PDF Pag 15: date (PK), operador (PK), contadores. 
-    # NOTA: Las tablas con COUNTER deben ser dedicadas exclusivamente a contadores + PKs.
+
     session.execute("""
         CREATE TABLE IF NOT EXISTS rendimiento_operador (
             fecha DATE,
@@ -51,9 +50,7 @@ def create_schema(session):
     """)
 
     # 5. Tabla: Actividades Diarias de Operador (Req 8, 9)
-    # PDF Pag 16: dia (PK), hora (CK), operador, ticket_id_afectado, actividad, detalle
-    # Ajuste: Para filtrar por día Y operador eficientemente, 'operador' debería ser parte de la PK o usar un índice.
-    # Siguiendo el PDF estricto (dia PK, hora CK), filtraremos por día.
+    
     session.execute("""
         CREATE TABLE IF NOT EXISTS bitacora_actividades (
             dia DATE,
@@ -67,7 +64,7 @@ def create_schema(session):
     """)
 
     # 6. Tabla: Agentes que participaron en el ticket (Req 6, 7)
-    # PDF Pag 17: ticket_id (PK), agente_id (CK), nombre..., fecha..., detalle...
+    
     session.execute("""
         CREATE TABLE IF NOT EXISTS participacion_agentes (
             ticket_id UUID,

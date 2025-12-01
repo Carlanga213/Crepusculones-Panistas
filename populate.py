@@ -5,7 +5,6 @@ import uuid
 import pydgraph
 import connect
 from Dgraph import manager as dgraph_manager
-# Importamos el esquema de Cassandra que proporcionaste
 from Cassandra import schema 
 from Cassandra import manager as cassandra_manager
 
@@ -22,7 +21,7 @@ def load_csv(filename):
     file_path = os.path.join(DATA_DIR, filename)
     data = []
     if not os.path.exists(file_path):
-        print(f"[Error] No se encontró {file_path}.")
+        print(f"[Aviso] No se encontró {file_path}. Saltando carga de este archivo.")
         return []
     with open(file_path, mode='r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
@@ -32,20 +31,34 @@ def load_csv(filename):
 
 def populate():
     # --- 1. CONFIGURACIÓN DGRAPH ---
+    print(">> Conectando a Dgraph...")
     dgraph_client = get_dgraph_client()
     op = pydgraph.Operation(drop_op="DATA")
     dgraph_client.alter(op)
     dgraph_manager.set_schema(dgraph_client)
 
     # --- 2. CONFIGURACIÓN CASSANDRA ---
+    print(">> Conectando a Cassandra...")
     cass_session = get_cassandra_session()
     if cass_session:
-        print(">> Creando esquema Cassandra...")
+        print(">> Recreando esquema Cassandra...")
+        # Nota: schema.create_schema usualmente usa 'IF NOT EXISTS', 
+        # para limpiar datos viejos en desarrollo, a veces es útil hacer un drop keyspace manual
+        # o simplemente confiar en que los inserts nuevos se agregarán.
         schema.create_schema(cass_session)
+        # Opcional: Limpiar tablas para no duplicar si corres el script varias veces
+        try:
+            tablas = ['mensajes_ticket', 'historial_estados', 'rendimiento_operador', 'bitacora_actividades', 'participacion_agentes']
+            for t in tablas:
+                cass_session.execute(f"TRUNCATE helpdesk_system.{t}")
+            print(">> Tablas de Cassandra limpiadas.")
+        except Exception as e:
+            print(f">> Nota: No se pudieron truncar tablas (quizás es la primera ejecución): {e}")
+
     else:
         print("!! No se pudo conectar a Cassandra. Saltando...")
 
-    # --- 3. CARGA DE DATOS COMPARTIDA ---
+    # --- 3. CARGA DE DATOS ---
     
     # Mapas para Dgraph (UIDs temporales)
     org_uid_map = {}
@@ -57,7 +70,6 @@ def populate():
         print("\n--- Procesando Organizaciones ---")
         orgs = load_csv('organizations.csv')
         for row in orgs:
-            # Dgraph
             obj = {'uid': '_:' + row['org_id'], 'dgraph.type': 'Organization', 'org_id': row['org_id'], 'name': row['name']}
             txn.mutate(pydgraph.Mutation(set_json=json.dumps(obj).encode('utf8')))
         txn.commit()
@@ -71,7 +83,6 @@ def populate():
         print("\n--- Procesando Clientes ---")
         customers = load_csv('customers.csv')
         for row in customers:
-            # Dgraph
             org_real_uid = org_uid_map.get(row['belongs_to_org'])
             if org_real_uid:
                 obj = {
@@ -91,7 +102,6 @@ def populate():
         print("\n--- Procesando Agentes ---")
         agents = load_csv('agents.csv')
         for row in agents:
-            # Dgraph
             obj = {'uid': '_:' + row['agent_id'], 'dgraph.type': 'Agent', 'agent_id': row['agent_id'], 'name': row['name']}
             txn.mutate(pydgraph.Mutation(set_json=json.dumps(obj).encode('utf8')))
         txn.commit()
@@ -114,11 +124,11 @@ def populate():
             txn.mutate(pydgraph.Mutation(set_nquads='\n'.join(hierarchy_mutations).encode('utf-8')))
             txn.commit()
 
-        print("\n--- Procesando Incidentes (Dgraph + Cassandra) ---")
+        print("\n--- Procesando Incidentes (Base) ---")
         incidents = load_csv('incidents.csv')
         txn = dgraph_client.txn()
         
-        count_cass = 0
+        count_cass_init = 0
         for row in incidents:
             # 1. DGRAPH
             cust_uid = cust_uid_map.get(row['reported_by'])
@@ -132,35 +142,63 @@ def populate():
                     obj['assigned_to'] = [{'uid': agent_uid}]
                 txn.mutate(pydgraph.Mutation(set_json=json.dumps(obj).encode('utf8')))
 
-            # 2. CASSANDRA
+            # 2. CASSANDRA (Estado Inicial Base)
+            # Solo insertamos si NO vamos a cargar historial detallado para este ticket,
+            # pero como estamos haciendo una carga masiva, es seguro insertar el estado base primero.
             if cass_session:
-                # Insertar estado inicial
-                # Usamos los helpers del manager para consistencia
                 cassandra_manager.update_ticket_status(
                     cass_session, 
                     row['incident_id'], 
                     row['status'], 
                     row['assigned_to'] if row['assigned_to'] else "system", 
-                    "Carga inicial de datos"
+                    "Estado inicial (Importación)"
                 )
-                
-                # Insertar participación si hay agente asignado
                 if row['assigned_to']:
                     cassandra_manager.register_participation(
-                        cass_session,
-                        row['incident_id'],
-                        row['assigned_to'],
-                        "Asignación Inicial (Carga)"
+                        cass_session, row['incident_id'], row['assigned_to'], "Asignación Inicial"
                     )
-                count_cass += 1
+                count_cass_init += 1
 
         txn.commit()
-        print(f"[Dgraph] Cargados {len(incidents)} incidentes.")
-        print(f"[Cassandra] Sincronizados {count_cass} registros iniciales.")
+        print(f"[Dgraph] Incidentes cargados.")
+        print(f"[Cassandra] Estados base sincronizados: {count_cass_init}")
+
+        # --- CARGA DE HISTORIAL CASSANDRA ---
+        if cass_session:
+            print("\n--- Cargando Historial de Chat (Cassandra) ---")
+            chats = load_csv('chat_history.csv')
+            for row in chats:
+                cassandra_manager.register_message(
+                    cass_session,
+                    row['ticket_id'],
+                    row['agent_id'],
+                    row['message']
+                )
+            print(f">> {len(chats)} mensajes de chat insertados.")
+
+            print("\n--- Cargando Historial de Estados (Cassandra) ---")
+            # Esto llenará historial, bitácora y rendimiento
+            history = load_csv('status_history.csv')
+            for row in history:
+                cassandra_manager.update_ticket_status(
+                    cass_session,
+                    row['ticket_id'],
+                    row['status'],
+                    row['agent_id'],
+                    row['details']
+                )
+                # También registramos participación explícita
+                cassandra_manager.register_participation(
+                    cass_session,
+                    row['ticket_id'],
+                    row['agent_id'],
+                    f"Cambio de estado a {row['status']}"
+                )
+            print(f">> {len(history)} eventos de historial insertados.")
 
     except Exception as e:
         print(f"\n[ERROR] Falló la carga: {e}")
-        # traceback.print_exc()
+        # import traceback; traceback.print_exc()
 
 if __name__ == '__main__':
     populate()

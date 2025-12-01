@@ -1,0 +1,151 @@
+ticket_id,agent_id,message
+inc_0077,agent_015,Por favor envíe una captura de pantalla.
+inc_0060,agent_008,El usuario reporta que ya funciona.
+inc_0034,agent_008,Escalando el ticket al departamento de redes.
+inc_0047,agent_020,El problema persiste después del reinicio.
+inc_0102,agent_014,Por favor envíe una captura de pantalla.
+inc_0130,agent_020,La actualización se ha completado.
+inc_0043,agent_017,"Recibido, asignando un técnico."
+inc_0178,agent_015,Gracias por su paciencia.
+inc_0016,agent_013,Error 500 detectado en el balanceador.
+inc_0074,agent_010,Estoy revisando los logs del servidor.
+inc_0088,agent_018,Cerrando ticket por inactividad.
+inc_0161,agent_017,Cerrando ticket por inactividad.
+inc_0058,agent_017,El servicio se restablecerá en 10 minutos.
+inc_0137,agent_016,Estoy revisando los logs del servidor.
+inc_0174,agent_019,"Confirmado, es un error de capa 8."
+inc_0049,agent_017,"Recibido, asignando un técnico."
+inc_0019,agent_017,El usuario reporta que ya funciona.
+inc_0094,agent_004,¿Podría intentar limpiar la caché?
+inc_0100,agent_019,Error 500 detectado en el balanceador.
+inc_0057,agent_020,Cerrando ticket por inactividad.
+inc_0140,agent_012,El usuario reporta que ya funciona.
+inc_0160,agent_018,¿Podría intentar limpiar la caché?
+inc_0126,agent_010,El usuario reporta que ya funciona.
+inc_0180,agent_002,La actualización se ha completado.
+inc_0093,agent_014,"Recibido, asignando un técnico."
+inc_0070,agent_005,¿Podría intentar limpiar la caché?
+inc_0174,agent_005,¿Podría intentar limpiar la caché?
+inc_0008,agent_016,Cerrando ticket por inactividad.
+inc_0035,agent_018,El problema persiste después del reinicio.
+inc_0024,agent_010,Estoy revisando los logs del servidor.
+inc_0045,agent_012,"Hola, ¿en qué puedo ayudarle?"
+inc_0100,agent_012,Escalando el ticket al departamento de redes.
+inc_0002,agent_003,Gracias por su paciencia.
+inc_0114,agent_016,Necesito acceso remoto a su equipo.
+inc_0019,agent_019,El usuario reporta que ya funciona.
+inc_0071,agent_004,"Confirmado, es un error de capa 8."
+inc_0032,agent_009,"Confirmado, es un error de capa 8."
+inc_0117,agent_010,Cerrando ticket por inactividad.
+inc_0198,agent_016,"Confirmado, es un error de capa 8."
+inc_0087,agent_014,Por favor envíe una captura de pantalla.
+inc_0050,agent_007,Estoy revisando los logs del servidor.
+inc_0004,agent_017,Error 500 detectado en el balanceador.
+inc_0086,agent_008,Estoy revisando los logs del servidor.
+inc_0001,agent_002,Error 500 detectado en el balanceador.
+inc_0168,agent_011,¿Podría intentar limpiar la caché?
+inc_0093,agent_011,Estoy revisando los logs del servidor.
+inc_0102,agent_014,"Hola, ¿en qué puedo ayudarle?"
+inc_0130,agent_015,Por favor envíe una captura de pantalla.
+inc_0088,agent_010,Error 500 detectado en el balanceador.
+inc_0178,agent_015,Cerrando ticket por inactividad.
+inc_0106,agent_014,"Confirmado, es un error de capa 8."
+inc_0032,agent_004,¿Podría intentar limpiar la caché?
+inc_0028,agent_017,El usuario reporta que ya funciona.
+inc_0081,agent_001,El usuario reporta que ya funciona.
+inc_0195,agent_018,El problema persiste después del reinicio.
+inc_0196,agent_013,"Recibido, asignando un técnico."
+inc_0070,agent_019,Estoy revisando los logs del servidor.
+inc_0027,agent_017,Cerrando ticket por inactividad.
+inc_0020,agent_003,Gracias por su paciencia.
+inc_0076,agent_002,Error 500 detectado en el balanceador.
+inc_0175,agent_007,Necesito acceso remoto a su equipo.
+inc_0137,agent_004,"Recibido, asignando un técnico."
+inc_0179,agent_003,"Hola, ¿en qué puedo ayudarle?"
+inc_0121,agent_013,¿Podría intentar limpiar la caché?
+inc_0018,agent_006,El servicio se restablecerá en 10 minutos.
+inc_0041,agent_017,El problema persiste después del reinicio.
+inc_0164,agent_019,Necesito acceso remoto a su equipo.
+inc_0054,agent_001,El usuario reporta que ya funciona.
+inc_0082,agent_017,"Recibido, asignando un técnico."
+inc_0106,agent_009,El problema persiste después del reinicio.
+inc_0121,agent_006,Escalando el ticket al departamento de redes.
+inc_0122,agent_020,Escalando el ticket al departamento de redes.
+inc_0138,agent_006,"Hola, ¿en qué puedo ayudarle?"
+inc_0141,agent_017,El servicio se restablecerá en 10 minutos.
+inc_0017,agent_010,"Confirmado, es un error de capa 8."
+inc_0136,agent_016,¿Podría intentar limpiar la caché?
+inc_0179,agent_012,El problema persiste después del reinicio.
+inc_0156,agent_020,Gracias por su paciencia.
+inc_0120,agent_020,Escalando el ticket al departamento de redes.
+inc_0094,agent_011,Por favor envíe una captura de pantalla.
+inc_0098,agent_009,"Confirmado, es un error de capa 8."
+inc_0053,agent_012,El problema persiste después del reinicio.
+inc_0015,agent_012,Error 500 detectado en el balanceador.
+inc_0003,agent_014,El servicio se restablecerá en 10 minutos.
+inc_0141,agent_010,"Recibido, asignando un técnico."
+inc_0027,agent_005,Cerrando ticket por inactividad.
+inc_0049,agent_011,El problema persiste después del reinicio.
+inc_0150,agent_007,Por favor envíe una captura de pantalla.
+inc_0043,agent_006,"Confirmado, es un error de capa 8."
+inc_0046,agent_016,¿Podría intentar limpiar la caché?
+inc_0139,agent_018,"Hola, ¿en qué puedo ayudarle?"
+inc_0024,agent_006,¿Podría intentar limpiar la caché?
+inc_0001,agent_004,El servicio se restablecerá en 10 minutos.
+inc_0025,agent_002,Error 500 detectado en el balanceador.
+inc_0157,agent_005,La actualización se ha completado.
+inc_0168,agent_001,"Recibido, asignando un técnico."
+inc_0168,agent_001,"Recibido, asignando un técnico."
+inc_0149,agent_010,Error 500 detectado en el balanceador.
+inc_0135,agent_019,Gracias por su paciencia.
+inc_0178,agent_002,El problema persiste después del reinicio.
+inc_0054,agent_002,"Recibido, asignando un técnico."
+inc_0112,agent_013,Por favor envíe una captura de pantalla.
+inc_0071,agent_003,Escalando el ticket al departamento de redes.
+inc_0183,agent_015,El problema persiste después del reinicio.
+inc_0038,agent_008,Cerrando ticket por inactividad.
+inc_0030,agent_017,"Confirmado, es un error de capa 8."
+inc_0185,agent_002,Cerrando ticket por inactividad.
+inc_0110,agent_017,El usuario reporta que ya funciona.
+inc_0113,agent_013,Escalando el ticket al departamento de redes.
+inc_0096,agent_006,Por favor envíe una captura de pantalla.
+inc_0173,agent_016,El problema persiste después del reinicio.
+inc_0081,agent_010,Estoy revisando los logs del servidor.
+inc_0097,agent_020,La actualización se ha completado.
+inc_0003,agent_003,Error 500 detectado en el balanceador.
+inc_0128,agent_015,"Recibido, asignando un técnico."
+inc_0106,agent_017,El problema persiste después del reinicio.
+inc_0195,agent_005,Error 500 detectado en el balanceador.
+inc_0114,agent_010,El usuario reporta que ya funciona.
+inc_0026,agent_005,Gracias por su paciencia.
+inc_0178,agent_017,El problema persiste después del reinicio.
+inc_0072,agent_012,Gracias por su paciencia.
+inc_0036,agent_006,"Hola, ¿en qué puedo ayudarle?"
+inc_0026,agent_016,Estoy revisando los logs del servidor.
+inc_0172,agent_018,Gracias por su paciencia.
+inc_0068,agent_012,Por favor envíe una captura de pantalla.
+inc_0052,agent_004,La actualización se ha completado.
+inc_0049,agent_005,Por favor envíe una captura de pantalla.
+inc_0033,agent_006,Estoy revisando los logs del servidor.
+inc_0120,agent_011,"Hola, ¿en qué puedo ayudarle?"
+inc_0196,agent_019,"Recibido, asignando un técnico."
+inc_0152,agent_007,"Hola, ¿en qué puedo ayudarle?"
+inc_0062,agent_012,El servicio se restablecerá en 10 minutos.
+inc_0181,agent_002,Estoy revisando los logs del servidor.
+inc_0193,agent_014,Gracias por su paciencia.
+inc_0133,agent_020,Gracias por su paciencia.
+inc_0122,agent_007,¿Podría intentar limpiar la caché?
+inc_0042,agent_006,Cerrando ticket por inactividad.
+inc_0157,agent_009,El usuario reporta que ya funciona.
+inc_0179,agent_017,El problema persiste después del reinicio.
+inc_0080,agent_018,¿Podría intentar limpiar la caché?
+inc_0045,agent_005,Necesito acceso remoto a su equipo.
+inc_0004,agent_011,"Hola, ¿en qué puedo ayudarle?"
+inc_0173,agent_001,"Hola, ¿en qué puedo ayudarle?"
+inc_0054,agent_019,"Recibido, asignando un técnico."
+inc_0075,agent_010,Cerrando ticket por inactividad.
+inc_0165,agent_020,Estoy revisando los logs del servidor.
+inc_0029,agent_004,El servicio se restablecerá en 10 minutos.
+inc_0085,agent_001,Cerrando ticket por inactividad.
+inc_0072,agent_016,Escalando el ticket al departamento de redes.
+inc_0181,agent_013,El servicio se restablecerá en 10 minutos.
