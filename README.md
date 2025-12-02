@@ -66,3 +66,12 @@ docker start dgraph
 #Si quieres descargar el GUI de dgraph es con el siguiente comando:
 docker run --name ratel -p 8000:8000 
 ```
+
+Iniciar el programa debe serguir los siguientes pasos:
+```bash
+#Cargar los datos con el populate.py:
+python populate.py
+
+#Ya cargados los datos y tener los contenedores activos se corre el main:
+python main.py
+```
