@@ -5,8 +5,8 @@ import os
 # Configuración
 NUM_RECORDS = 150  # Generaremos 150 registros para asegurar el mínimo de 100
 DATA_DIR = 'data'
-NUM_INCIDENTS = 200 # Basado en tu data_generator.py original
-NUM_AGENTS = 20     # Basado en tu data_generator.py original
+NUM_INCIDENTS = 200 
+NUM_AGENTS = 20     
 
 # Listas de base
 STATUS_LIST = ["abierto", "en_progreso", "resuelto", "cerrado", "en_espera"]

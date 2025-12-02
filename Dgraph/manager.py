@@ -52,7 +52,6 @@ def set_schema(client):
     client.alter(op)
     print(">> Esquema Dgraph actualizado correctamente.")
 
-# --- Funciones Auxiliares ---
 def get_uid(client, field, value):
     """Busca el UID de un nodo dado su identificador único."""
     query = f"""
@@ -62,17 +61,14 @@ def get_uid(client, field, value):
         }}
     }}
     """
-    # Las consultas (query) usualmente aceptan strings, pero es seguro codificar
     res = client.txn(read_only=True).query(query)
     data = json.loads(res.json)
     if data['get']:
         return data['get'][0]['uid']
     return None
 
-# --- Requerimientos 1 al 10 ---
 
 def assign_incident(client, incident_id, agent_id):
-    # [cite_start][Req 1] Asignación con timestamp [cite: 88-90]
     inc_uid = get_uid(client, "incident_id", incident_id)
     ag_uid = get_uid(client, "agent_id", agent_id)
     
@@ -83,7 +79,6 @@ def assign_incident(client, incident_id, agent_id):
     
     txn = client.txn()
     try:
-        # CORRECCIÓN: encode('utf-8')
         txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
@@ -91,7 +86,6 @@ def assign_incident(client, incident_id, agent_id):
         txn.discard()
 
 def link_incident_customer(client, incident_id, customer_id):
-    # [cite_start][Req 2] Vinculación Cliente-Incidente [cite: 91-93]
     inc_uid = get_uid(client, "incident_id", incident_id)
     cust_uid = get_uid(client, "customer_id", customer_id)
 
@@ -100,7 +94,6 @@ def link_incident_customer(client, incident_id, customer_id):
     txn = client.txn()
     try:
         nquads = f'<{inc_uid}> <reported_by> <{cust_uid}> .'
-        # CORRECCIÓN: encode('utf-8')
         txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
@@ -108,7 +101,6 @@ def link_incident_customer(client, incident_id, customer_id):
         txn.discard()
 
 def set_agent_hierarchy(client, sub_id, sup_id):
-    # [cite_start][Req 3] Jerarquía reports_to [cite: 94-96]
     sub_uid = get_uid(client, "agent_id", sub_id)
     sup_uid = get_uid(client, "agent_id", sup_id)
 
@@ -117,7 +109,6 @@ def set_agent_hierarchy(client, sub_id, sup_id):
     txn = client.txn()
     try:
         nquads = f'<{sub_uid}> <reports_to> <{sup_uid}> .'
-        # CORRECCIÓN: encode('utf-8')
         txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
@@ -125,7 +116,6 @@ def set_agent_hierarchy(client, sub_id, sup_id):
         txn.discard()
 
 def escalate_incident(client, incident_id, old_agent_id, new_agent_id):
-    # [cite_start][Req 4] Escalación con rastreo [cite: 97-99]
     inc_uid = get_uid(client, "incident_id", incident_id)
     old_uid = get_uid(client, "agent_id", old_agent_id)
     new_uid = get_uid(client, "agent_id", new_agent_id)
@@ -133,14 +123,12 @@ def escalate_incident(client, incident_id, old_agent_id, new_agent_id):
     if not (inc_uid and old_uid and new_uid): return False
 
     timestamp = datetime.datetime.now().isoformat()
-    # Se crean dos bordes: de quién escaló y a quién se le asignó ahora
     nquads = f"""
     <{inc_uid}> <escalated_from> <{old_uid}> (timestamp="{timestamp}") .
     <{inc_uid}> <assigned_to> <{new_uid}> (timestamp="{timestamp}", action="escalation") .
     """
     txn = client.txn()
     try:
-        # CORRECCIÓN: encode('utf-8')
         txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
@@ -148,7 +136,6 @@ def escalate_incident(client, incident_id, old_agent_id, new_agent_id):
         txn.discard()
 
 def link_related_incidents(client, id_a, id_b):
-    # [cite_start][Req 5] Incidencias relacionadas [cite: 100-102]
     uid_a = get_uid(client, "incident_id", id_a)
     uid_b = get_uid(client, "incident_id", id_b)
 
@@ -160,7 +147,6 @@ def link_related_incidents(client, id_a, id_b):
         <{uid_a}> <related_to> <{uid_b}> .
         <{uid_b}> <related_to> <{uid_a}> .
         """
-        # CORRECCIÓN: encode('utf-8')
         txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
@@ -168,7 +154,6 @@ def link_related_incidents(client, id_a, id_b):
         txn.discard()
 
 def get_agent_workload(client, agent_id):
-    # [cite_start][Req 6] Carga de trabajo (Reverse edge) [cite: 103-105]
     query = f"""
     {{
         workload(func: eq(agent_id, "{agent_id}")) {{
@@ -185,7 +170,6 @@ def get_agent_workload(client, agent_id):
     return json.loads(res.json)
 
 def get_customer_history(client, customer_id):
-    # [cite_start][Req 7] Historial Cliente [cite: 106-108]
     query = f"""
     {{
         history(func: eq(customer_id, "{customer_id}")) {{
@@ -202,7 +186,6 @@ def get_customer_history(client, customer_id):
     return json.loads(res.json)
 
 def set_customer_org(client, customer_id, org_id):
-    # [cite_start][Req 8] Agrupar por organización [cite: 109-111]
     cust_uid = get_uid(client, "customer_id", customer_id)
     org_uid = get_uid(client, "org_id", org_id)
 
@@ -211,7 +194,6 @@ def set_customer_org(client, customer_id, org_id):
     txn = client.txn()
     try:
         nquads = f'<{cust_uid}> <belongs_to_org> <{org_uid}> .'
-        # CORRECCIÓN: encode('utf-8')
         txn.mutate(pydgraph.Mutation(set_nquads=nquads.encode('utf-8')))
         txn.commit()
         return True
@@ -219,7 +201,6 @@ def set_customer_org(client, customer_id, org_id):
         txn.discard()
 
 def get_org_incidents(client, org_id):
-    # [cite_start][Req 9] Incidencias por Org (Navegación Multinivel) [cite: 112-114]
     query = f"""
     {{
         org_incidents(func: eq(org_id, "{org_id}")) {{
@@ -238,7 +219,6 @@ def get_org_incidents(client, org_id):
     return json.loads(res.json)
 
 def get_traceability(client, incident_id):
-    # [cite_start][Req 10] Trazabilidad completa con facetas [cite: 115-117]
     query = f"""
     {{
         traceability(func: eq(incident_id, "{incident_id}")) {{

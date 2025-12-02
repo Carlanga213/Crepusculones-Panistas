@@ -3,7 +3,6 @@ import csv
 import os
 from datetime import datetime
 
-# --- Cache Global de Nombres ---
 AGENT_NAMES = {}
 
 def to_uuid(id_str):
@@ -28,7 +27,6 @@ def get_agent_name(uuid_val):
     load_agent_names()
     return AGENT_NAMES.get(str(uuid_val), str(uuid_val))
 
-# --- REQUERIMIENTOS ---
 
 def register_message(session, ticket_id_str, autor_id_str, contenido):
     # [Req 1]

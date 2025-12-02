@@ -2,11 +2,8 @@ import json
 from datetime import datetime
 from bson import ObjectId
 
-# --- Consultas y Lógica de Negocio ---
-
 def get_tickets_by_user(db, user_id):
     print(f"\n--- Tickets del Usuario {user_id} ---")
-    # Intentamos convertir a ObjectId si es posible, si no, buscamos como string
     try:
         query = {"usuarioId": ObjectId(user_id)}
     except:
@@ -55,7 +52,6 @@ def get_operators_by_level(db, nivel):
 
 def search_tickets(db, text):
     print(f"\n--- Buscar Tickets: '{text}' ---")
-    # Búsqueda simple por regex en título o descripción
     query = {
         "$or": [
             {"titulo": {"$regex": text, "$options": "i"}},
@@ -130,8 +126,6 @@ def get_operators_by_shift(db, turno):
     ops = list(db.operadores.find({"turno": turno}))
     for o in ops:
         print(f"{o.get('nombre')} - Depto: {o.get('departamento')}")
-
-# --- Pipelines de Agregación ---
 
 def pipeline_count_by_status(db):
     print("\n--- Pipeline: Conteo por Estado ---")

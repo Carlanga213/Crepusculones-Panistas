@@ -2,7 +2,7 @@
 
 def create_schema(session):
     """
-    Crea el Keyspace y las Tablas requeridas según el PDF.
+    Crea el Keyspace y las Tablas requeridas.
     """
     # 1. Crear Keyspace
     session.execute("""
