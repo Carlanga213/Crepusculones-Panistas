@@ -1,0 +1,38 @@
+[
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10002a001" },
+    "nombre": "Alondra Gonzalez",
+    "correo": "alondra.gonzalez@empresa.com",
+    "nivel": "tier 2",
+    "departamento": "Soporte Técnico",
+    "turno": "matutino",
+    "fechaIngreso": { "$date": "2024-05-12T08:00:00Z" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10002a002" },
+    "nombre": "Kassia Urenda",
+    "correo": "kassia.urenda@empresa.com",
+    "nivel": "tier 1",
+    "departamento": "Soporte Técnico",
+    "turno": "vespertino",
+    "fechaIngreso": { "$date": "2023-10-01T09:00:00Z" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10002a003" },
+    "nombre": "Said Fontes",
+    "correo": "said.fontes@empresa.com",
+    "nivel": "tier 3",
+    "departamento": "Facturación",
+    "turno": "matutino",
+    "fechaIngreso": { "$date": "2022-03-20T08:00:00Z" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10002a004" },
+    "nombre": "Jesus Lopez",
+    "correo": "jesus.lopez@empresa.com",
+    "nivel": "tier 2",
+    "departamento": "Supervisores",
+    "turno": "vespertino",
+    "fechaIngreso": { "$date": "2024-01-15T08:00:00Z" }
+  }
+]

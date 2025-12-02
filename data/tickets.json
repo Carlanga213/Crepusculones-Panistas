@@ -1,0 +1,80 @@
+[
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10003a001" },
+    "titulo": "Error al iniciar sesión",
+    "descripcion": "El sistema muestra un error 500 al intentar iniciar sesión.",
+    "prioridad": "alta",
+    "estado": "abierto",
+    "fechaCreacion": { "$date": "2025-11-10T09:30:00Z" },
+    "fechaCierre": null,
+    "usuarioCorreo": "ana.torres@iteso.mx",
+    "operadorCorreo": "said.fontes@empresa.com",
+    "usuarioId": { "$oid": "67601a01f1a3a1a10001a001" },
+    "operadorId": { "$oid": "67601a01f1a3a1a10002a003" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10003a002" },
+    "titulo": "No carga la factura",
+    "descripcion": "Al generar la factura, la página queda en blanco.",
+    "prioridad": "media",
+    "estado": "en proceso",
+    "fechaCreacion": { "$date": "2025-10-28T12:00:00Z" },
+    "fechaCierre": null,
+    "usuarioCorreo": "rogelio.sosa@intel.mx",
+    "operadorCorreo": "kassia.urenda@empresa.com",
+    "usuarioId": { "$oid": "67601a01f1a3a1a10001a002" },
+    "operadorId": { "$oid": "67601a01f1a3a1a10002a002" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10003a003" },
+    "titulo": "Reporte de datos incorrectos",
+    "descripcion": "La exportación CSV contiene columnas vacías y duplicadas.",
+    "prioridad": "baja",
+    "estado": "cerrado",
+    "fechaCreacion": { "$date": "2025-09-15T15:00:00Z" },
+    "fechaCierre": { "$date": "2025-09-17T10:15:00Z" },
+    "usuarioCorreo": "kamila.carrasco@gmail.com",
+    "operadorCorreo": "alondra.gonzalez@empresa.com",
+    "usuarioId": { "$oid": "67601a01f1a3a1a10001a004" },
+    "operadorId": { "$oid": "67601a01f1a3a1a10002a001" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10003a004" },
+    "titulo": "Lentitud al filtrar",
+    "descripcion": "Filtros de búsqueda tardan más de 30 segundos en devolver resultados.",
+    "prioridad": "alta",
+    "estado": "abierto",
+    "fechaCreacion": { "$date": "2025-11-01T08:30:00Z" },
+    "fechaCierre": null,
+    "usuarioCorreo": "carlos.rubio@oracle.mx",
+    "operadorCorreo": "jesus.lopez@empresa.com",
+    "usuarioId": { "$oid": "67601a01f1a3a1a10001a003" },
+    "operadorId": { "$oid": "67601a01f1a3a1a10002a004" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10003a005" },
+    "titulo": "Error en integración con pasarela de pago",
+    "descripcion": "Transacciones rechazadas con código 402 sin motivo aparente.",
+    "prioridad": "alta",
+    "estado": "en proceso",
+    "fechaCreacion": { "$date": "2025-10-25T10:00:00Z" },
+    "fechaCierre": null,
+    "usuarioCorreo": "emilio.gonzalez@apple.com",
+    "operadorCorreo": "alondra.gonzalez@empresa.com",
+    "usuarioId": { "$oid": "67601a01f1a3a1a10001a005" },
+    "operadorId": { "$oid": "67601a01f1a3a1a10002a001" }
+  },
+  {
+    "_id": { "$oid": "67601a01f1a3a1a10003a006" },
+    "titulo": "Solicitud de mejora: reportes programados",
+    "descripcion": "Requerimos programación semanal para enviar reportes por email.",
+    "prioridad": "baja",
+    "estado": "cerrado",
+    "fechaCreacion": { "$date": "2025-08-02T09:00:00Z" },
+    "fechaCierre": { "$date": "2025-08-20T11:00:00Z" },
+    "usuarioCorreo": "victor.aguilar@xerox.com",
+    "operadorCorreo": "said.fontes@empresa.com",
+    "usuarioId": { "$oid": "67601a01f1a3a1a10001a006" },
+    "operadorId": { "$oid": "67601a01f1a3a1a10002a003" }
+  }
+]

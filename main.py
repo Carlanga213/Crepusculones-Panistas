@@ -1,78 +1,16 @@
-import connect
+import connect as connect
 import json
+import os
+import sys
 from Dgraph import manager as dgraph_manager
-from Cassandra import manager as cass_manager
+from Cassandra import manager as cassandra_manager
+from Mongo import manager as mongo_manager
 
 def print_json(data):
-    print(json.dumps(data, indent=2, ensure_ascii=False, default=str))
+    """Ayuda visual para imprimir respuestas JSON bonitas"""
+    print(json.dumps(data, indent=2, ensure_ascii=False))
 
-def menu_cassandra(session):
-    if not session:
-        print("!! Error: No hay conexión con Cassandra.")
-        return
-
-    while True:
-        print("\n" + "="*50)
-        print("      MÓDULO CASSANDRA - TRAZABILIDAD Y CHAT")
-        print("="*50)
-        print("1.  Nuevo Mensaje (Chat)")
-        print("2.  Ver Historial Chat Ticket")
-        print("3.  Cambiar Estado Ticket")
-        print("4.  Ver Historial Estados Ticket")
-        print("5.  Ver Estado Actual (Rápido)")
-        print("6.  Registrar Participación Agente")
-        print("7.  Consultar Participantes Ticket")
-        print("8.  Auditoría Diaria")
-        print("9.  Reporte Rendimiento Diario")
-        print("10. Volver")
-        
-        op = input("\nSeleccione una opción: ")
-        
-        if op == '1':
-            cass_manager.register_message(session, 
-                input("Ticket ID: "), input("Autor ID: "), input("Mensaje: "))
-            print(">> Mensaje guardado.")
-            
-        elif op == '2':
-            res = cass_manager.get_chat_history(session, input("Ticket ID: "))
-            print_json(res)
-            
-        elif op == '3':
-            cass_manager.update_ticket_status(session, 
-                input("Ticket ID: "), input("Nuevo Estado: "), 
-                input("Agente ID: "), input("Detalles: "))
-            print(">> Estado actualizado.")
-            
-        elif op == '4':
-            res = cass_manager.get_status_history(session, input("Ticket ID: "))
-            print_json(res)
-            
-        elif op == '5':
-            res = cass_manager.get_current_status(session, input("Ticket ID: "))
-            print(f">> Estado Actual: {res}")
-            
-        elif op == '6':
-            cass_manager.register_participation(session, 
-                input("Ticket ID: "), input("Agente ID: "), input("Acción: "))
-            print(">> Participación registrada.")
-            
-        elif op == '7':
-            res = cass_manager.get_participants(session, input("Ticket ID: "))
-            print_json(res)
-            
-        elif op == '8':
-            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
-            res = cass_manager.get_daily_audit(session, d if d else None)
-            print_json(res)
-
-        elif op == '9':
-            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
-            res = cass_manager.get_daily_performance(session, d if d else None)
-            print_json(res)
-            
-        elif op == '10':
-            break
-
+# --- MENÚ DGRAPH (Ya implementado) ---
 def menu_dgraph():
     # Establecer conexión
     try:
@@ -104,7 +42,6 @@ def menu_dgraph():
         if op == '1':
             inc = input("ID Incidencia: ")
             ag = input("ID Agente: ")
-            # CORRECCIÓN: usar dgraph_manager en lugar de manager
             if dgraph_manager.assign_incident(client, inc, ag):
                 print(">> Asignación exitosa.")
             else:
@@ -180,17 +117,89 @@ def menu_dgraph():
         else:
             print("Opción inválida.")
 
-def main_menu():
-    # Inicializar conexiones
-    dgraph_stub = connect.create_client_stub()
-    dgraph_client = connect.create_client(dgraph_stub)
-    cass_session = connect.create_cassandra_session()
+def menu_mongo():
+    # Crear conexión DB
+    try:
+        db = connect.create_mongo_db()
+    except Exception as e:
+        print(f"Error conectando a Mongo: {e}")
+        return
 
+    while True:
+        print("\n" + "="*50)
+        print("      MÓDULO MONGODB - GESTIÓN DE DOCUMENTOS")
+        print("="*50)
+        print("1.  [ADMIN] Cargar datos (Desde JSON)")
+        print("2.  Tickets por usuario (ID)")
+        print("3.  Tickets por prioridad")
+        print("4.  Tickets por operador (ID)")
+        print("5.  Tickets por estado")
+        print("6.  Operadores por nivel")
+        print("7.  Buscar tickets (Texto)")
+        print("8.  Tickets abiertos > 7 días")
+        print("9.  Usuarios por empresa")
+        print("10. Operadores por departamento")
+        print("11. Operadores por turno")
+        print("12. Pipeline: Conteo por estado")
+        print("13. Pipeline: Conteo por prioridad")
+        print("14. Volver al Menú Principal")
+
+        op = input("\nSeleccione una opción: ")
+
+        if op == "1":
+            # Llamamos al populate.py o una función de carga
+            print("Ejecuta 'python populate.py' para cargar datos masivos.")
+        elif op == "2":
+            uid = input("ID del usuario: ")
+            mongo_manager.get_tickets_by_user(db, uid)
+        elif op == "3":
+            prio = input("Prioridad (alta, media, baja): ")
+            mongo_manager.get_tickets_by_priority(db, prio)
+        elif op == "4":
+            oid = input("ID del operador: ")
+            mongo_manager.get_tickets_by_operator(db, oid)
+        elif op == "5":
+            est = input("Estado: ")
+            mongo_manager.get_tickets_by_status(db, est)
+        elif op == "6":
+            niv = input("Nivel: ")
+            mongo_manager.get_operators_by_level(db, niv)
+        elif op == "7":
+            txt = input("Texto a buscar: ")
+            mongo_manager.search_tickets(db, txt)
+        elif op == "8":
+            mongo_manager.get_old_open_tickets(db)
+        elif op == "9":
+            emp = input("Empresa: ")
+            mongo_manager.get_users_by_company(db, emp)
+        elif op == "10":
+            dep = input("Departamento: ")
+            mongo_manager.get_operators_by_dept(db, dep)
+        elif op == "11":
+            tur = input("Turno: ")
+            mongo_manager.get_operators_by_shift(db, tur)
+        elif op == "12":
+            mongo_manager.pipeline_count_by_status(db)
+        elif op == "13":
+            mongo_manager.pipeline_count_by_priority(db)
+        elif op == "14":
+            break
+        else:
+            print("Opción no válida.")
+
+# --- MENÚ CASSANDRA (Placeholder) ---
+def menu_cassandra():
+    print("\n>> Módulo Cassandra: Pendiente de implementación completa.")
+    # Aquí irían las llamadas a Cassandra/manager.py cuando esté listo
+
+# --- MENÚ PRINCIPAL ---
+def main_menu():
     while True:
         print("\n" + "*"*50)
         print("   SISTEMA INTEGRAL - CREPUSCULONES PANISTAS")
         print("*"*50)
-        print("1. MongoDB (Usuarios y Tickets) [No disp]")
+        print("Seleccione la Base de Datos:")
+        print("1. MongoDB (Usuarios, Operadores y Tickets)")
         print("2. Cassandra (Chat y Bitácoras)")
         print("3. Dgraph (Grafos y Relaciones)")
         print("4. Salir")
@@ -198,20 +207,13 @@ def main_menu():
         opcion = input("\nOpción: ")
         
         if opcion == '1':
-            print(">> Módulo MongoDB no disponible aún.")
+            menu_mongo()
         elif opcion == '2':
-            menu_cassandra(cass_session)
+            menu_cassandra()
         elif opcion == '3':
-            # Asegúrate de importar menu_dgraph desde main.py original 
-            # o copiar la función aquí.
-            # menu_dgraph(dgraph_client) 
-            # *Para simplificar, asumo que mantienes tu función menu_dgraph original*
-            from main import menu_dgraph as run_dgraph_menu
-            run_dgraph_menu() 
+            menu_dgraph()
         elif opcion == '4':
-            print("Saliendo...")
-            dgraph_stub.close()
-            if cass_session: cass_session.shutdown()
+            print("Saliendo del sistema...")
             break
         else:
             print("Opción no válida.")
@@ -220,4 +222,4 @@ if __name__ == '__main__':
     try:
         main_menu()
     except KeyboardInterrupt:
-        print("\nPrograma terminado.")
+        print("\nPrograma terminado por el usuario.")
