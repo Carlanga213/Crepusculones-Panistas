@@ -2,9 +2,12 @@
 
 def create_schema(session):
     """
-    Crea el Keyspace y las Tablas requeridas según el PDF.
+    Crea el Keyspace y las Tablas usando TEXT para los IDs
+    para que sean legibles (ej. 'inc_0001', 'agent_005').
     """
-    # 1. Crear Keyspace
+    # 1. Crear keyspace
+    session.execute("DROP KEYSPACE IF EXISTS helpdesk_system;")
+    
     session.execute("""
         CREATE KEYSPACE IF NOT EXISTS helpdesk_system 
         WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
@@ -12,63 +15,58 @@ def create_schema(session):
     
     session.set_keyspace('helpdesk_system')
 
-    # 2. Tabla: Mensajes de Chat por Ticket 
-    
+    # Mensajes de chat 
     session.execute("""
         CREATE TABLE IF NOT EXISTS mensajes_ticket (
-            ticket_id UUID,
+            ticket_id TEXT,
             fecha_evento TIMEUUID,
-            autor UUID,
+            autor TEXT,
             contenido TEXT,
             PRIMARY KEY (ticket_id, fecha_evento)
         ) WITH CLUSTERING ORDER BY (fecha_evento ASC);
     """)
 
-    # 3. Tabla: Historial de Estados
-    
+    # Historial de Estados
     session.execute("""
         CREATE TABLE IF NOT EXISTS historial_estados (
-            ticket_id UUID,
+            ticket_id TEXT,
             fecha_cambio TIMEUUID,
-            estado TEXT, -- El PDF dice UUID, pero TEXT es más práctico para estados como 'abierto'
-            operador_que_actualizo UUID,
+            estado TEXT,
+            operador_que_actualizo TEXT,
             detalles_actualizacion TEXT,
             PRIMARY KEY (ticket_id, fecha_cambio)
         ) WITH CLUSTERING ORDER BY (fecha_cambio DESC);
     """)
 
-    # 4. Tabla: Rendimiento de Operador 
-
+    # Rendimiento de Agente
     session.execute("""
         CREATE TABLE IF NOT EXISTS rendimiento_operador (
             fecha DATE,
-            operador UUID,
+            operador TEXT,
             tickets_atendidos COUNTER,
             tickets_cerrados COUNTER,
             PRIMARY KEY (fecha, operador)
         );
     """)
 
-    # 5. Tabla: Actividades Diarias de Operador
-    
+    # Actividades Diarias de agente
     session.execute("""
         CREATE TABLE IF NOT EXISTS bitacora_actividades (
             dia DATE,
             hora TIMEUUID,
-            operador UUID,
-            ticket_id_afectado UUID,
+            operador TEXT,
+            ticket_id_afectado TEXT,
             actividad TEXT,
             detalle_accion TEXT,
             PRIMARY KEY (dia, hora)
         ) WITH CLUSTERING ORDER BY (hora DESC);
     """)
 
-    # 6. Tabla: Agentes que participaron en el ticket
-    
+    # Participación de agentes en ticket
     session.execute("""
         CREATE TABLE IF NOT EXISTS participacion_agentes (
-            ticket_id UUID,
-            agente_id UUID,
+            ticket_id TEXT,
+            agente_id TEXT,
             nombre_operador TEXT,
             fecha_ultima_accion TIMESTAMP,
             detalle_accion TEXT,
@@ -76,4 +74,5 @@ def create_schema(session):
         );
     """)
 
-    print("Esquema de Cassandra creado correctamente.")
+    print("✅ Esquema de Cassandra actualizado a TEXT (IDs legibles).")
+

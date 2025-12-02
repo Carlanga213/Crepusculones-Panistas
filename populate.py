@@ -42,18 +42,14 @@ def populate():
     cass_session = get_cassandra_session()
     if cass_session:
         print(">> Recreando esquema Cassandra...")
-        # Nota: schema.create_schema usualmente usa 'IF NOT EXISTS', 
-        # para limpiar datos viejos en desarrollo, a veces es útil hacer un drop keyspace manual
-        # o simplemente confiar en que los inserts nuevos se agregarán.
         schema.create_schema(cass_session)
-        # Opcional: Limpiar tablas para no duplicar si corres el script varias veces
         try:
             tablas = ['mensajes_ticket', 'historial_estados', 'rendimiento_operador', 'bitacora_actividades', 'participacion_agentes']
             for t in tablas:
                 cass_session.execute(f"TRUNCATE helpdesk_system.{t}")
             print(">> Tablas de Cassandra limpiadas.")
         except Exception as e:
-            print(f">> Nota: No se pudieron truncar tablas (quizás es la primera ejecución): {e}")
+            print(f">> Nota: No se pudieron truncar tablas {e}")
 
     else:
         print("!! No se pudo conectar a Cassandra. Saltando...")
@@ -143,8 +139,7 @@ def populate():
                 txn.mutate(pydgraph.Mutation(set_json=json.dumps(obj).encode('utf8')))
 
             # 2. CASSANDRA (Estado Inicial Base)
-            # Solo insertamos si NO vamos a cargar historial detallado para este ticket,
-            # pero como estamos haciendo una carga masiva, es seguro insertar el estado base primero.
+
             if cass_session:
                 cassandra_manager.update_ticket_status(
                     cass_session, 

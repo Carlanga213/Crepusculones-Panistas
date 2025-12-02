@@ -8,65 +8,82 @@ def print_json(data):
 
 def menu_cassandra(session):
     if not session:
-        print("!! Error: No hay conexión con Cassandra.")
+        print("No hay conexión con Cassandra.")
         return
 
     while True:
         print("\n" + "="*50)
-        print("      MÓDULO CASSANDRA - TRAZABILIDAD Y CHAT")
+        print("      CASSANDRA")
         print("="*50)
-        print("1.  Nuevo Mensaje (Chat)")
-        print("2.  Ver Historial Chat Ticket")
-        print("3.  Cambiar Estado Ticket")
-        print("4.  Ver Historial Estados Ticket")
-        print("5.  Ver Estado Actual (Rápido)")
-        print("6.  Registrar Participación Agente")
-        print("7.  Consultar Participantes Ticket")
-        print("8.  Auditoría Diaria")
-        print("9.  Reporte Rendimiento Diario")
+        print("1.  Nuevo mensaje de chat")
+        print("2.  Ver historial de chat del ticket")
+        print("3.  Cambiar estado ticket")
+        print("4.  Ver historial estados ticket")
+        print("5.  Ver estado actual")
+        print("6.  Registrar participación agente")
+        print("7.  Consultar participantes ticket")
+        print("8.  Auditoría diaria")
+        print("9.  Reporte de rendimiento diario")
         print("10. Volver")
         
-        op = input("\nSeleccione una opción: ")
+        op = input("\nSelecciona una opción: ")
         
         if op == '1':
-            cass_manager.register_message(session, 
-                input("Ticket ID: "), input("Autor ID: "), input("Mensaje: "))
-            print(">> Mensaje guardado.")
+            cass_manager.register_message(
+                session, 
+                input("Ticket ID: "), 
+                input("Autor ID: "), 
+                input("Mensaje: "))
+            print("Mensaje guardado.")
             
         elif op == '2':
-            res = cass_manager.get_chat_history(session, input("Ticket ID: "))
+            res = cass_manager.get_chat_history(
+                session, 
+                input("Ticket ID: "))
             print_json(res)
             
         elif op == '3':
-            cass_manager.update_ticket_status(session, 
-                input("Ticket ID: "), input("Nuevo Estado: "), 
-                input("Agente ID: "), input("Detalles: "))
-            print(">> Estado actualizado.")
+            cass_manager.update_ticket_status(
+                session, 
+                input("Ticket ID: "), 
+                input("Nuevo Estado: "), 
+                input("Agente ID: "), 
+                input("Detalles: "))
+            print("Estado actualizado.")
             
         elif op == '4':
-            res = cass_manager.get_status_history(session, input("Ticket ID: "))
+            res = cass_manager.get_status_history(
+                session, 
+                input("Ticket ID: "))
             print_json(res)
             
         elif op == '5':
-            res = cass_manager.get_current_status(session, input("Ticket ID: "))
-            print(f">> Estado Actual: {res}")
+            res = cass_manager.get_current_status(
+                session, 
+                input("Ticket ID: "))
+            print(f"Estado Actual: {res}")
             
         elif op == '6':
-            cass_manager.register_participation(session, 
-                input("Ticket ID: "), input("Agente ID: "), input("Acción: "))
-            print(">> Participación registrada.")
+            cass_manager.register_participation(
+                session, 
+                input("Ticket ID: "), 
+                input("Agente ID: "), 
+                input("Acción: "))
+            print("Participación registrada.")
             
         elif op == '7':
-            res = cass_manager.get_participants(session, input("Ticket ID: "))
+            res = cass_manager.get_participants(
+                session, 
+                input("Ticket ID: "))
             print_json(res)
             
         elif op == '8':
-            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            d = input("Fecha (YYYY-MM-DD): ")
             res = cass_manager.get_daily_audit(session, d if d else None)
             print_json(res)
 
         elif op == '9':
-            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            d = input("Fecha (YYYY-MM-DD): ")
             res = cass_manager.get_daily_performance(session, d if d else None)
             print_json(res)
             
@@ -181,7 +198,7 @@ def menu_dgraph():
             print("Opción inválida.")
 
 def main_menu():
-    # Inicializar conexiones
+    # conexiones
     dgraph_stub = connect.create_client_stub()
     dgraph_client = connect.create_client(dgraph_stub)
     cass_session = connect.create_cassandra_session()
@@ -202,10 +219,6 @@ def main_menu():
         elif opcion == '2':
             menu_cassandra(cass_session)
         elif opcion == '3':
-            # Asegúrate de importar menu_dgraph desde main.py original 
-            # o copiar la función aquí.
-            # menu_dgraph(dgraph_client) 
-            # *Para simplificar, asumo que mantienes tu función menu_dgraph original*
             from main import menu_dgraph as run_dgraph_menu
             run_dgraph_menu() 
         elif opcion == '4':
