@@ -1,18 +1,23 @@
 import connect as connect
 import json
 import os
+from uuid import UUID
 import sys
 from Dgraph import manager as dgraph_manager
-from Cassandra import manager as cassandra_manager
+from Cassandra import manager as cass_manager
 from Mongo import manager as mongo_manager
+
+def json_uuid_serializer(obj):
+    if isinstance(obj, UUID):
+        return str(obj)
+    raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
 
 def print_json(data):
     """Ayuda visual para imprimir respuestas JSON bonitas"""
-    print(json.dumps(data, indent=2, ensure_ascii=False))
+    print(json.dumps(data, indent=2, ensure_ascii=False, default=json_uuid_serializer))
 
-# --- MENÚ DGRAPH (Ya implementado) ---
+
 def menu_dgraph():
-    # Establecer conexión
     try:
         stub = connect.create_client_stub()
         client = connect.create_client(stub)
@@ -118,7 +123,6 @@ def menu_dgraph():
             print("Opción inválida.")
 
 def menu_mongo():
-    # Crear conexión DB
     try:
         db = connect.create_mongo_db()
     except Exception as e:
@@ -147,7 +151,6 @@ def menu_mongo():
         op = input("\nSeleccione una opción: ")
 
         if op == "1":
-            # Llamamos al populate.py o una función de carga
             print("Ejecuta 'python populate.py' para cargar datos masivos.")
         elif op == "2":
             uid = input("ID del usuario: ")
@@ -187,12 +190,74 @@ def menu_mongo():
         else:
             print("Opción no válida.")
 
-# --- MENÚ CASSANDRA (Placeholder) ---
-def menu_cassandra():
-    print("\n>> Módulo Cassandra: Pendiente de implementación completa.")
-    # Aquí irían las llamadas a Cassandra/manager.py cuando esté listo
 
-# --- MENÚ PRINCIPAL ---
+def menu_cassandra(session):
+    if not session:
+        print("!! Error: No hay conexión con Cassandra.")
+        return
+
+    while True:
+        print("\n" + "="*50)
+        print("      MÓDULO CASSANDRA - TRAZABILIDAD Y CHAT")
+        print("="*50)
+        print("1.  Nuevo Mensaje (Chat)")
+        print("2.  Ver Historial Chat Ticket")
+        print("3.  Cambiar Estado Ticket")
+        print("4.  Ver Historial Estados Ticket")
+        print("5.  Ver Estado Actual (Rápido)")
+        print("6.  Registrar Participación Agente")
+        print("7.  Consultar Participantes Ticket")
+        print("8.  Auditoría Diaria")
+        print("9.  Reporte Rendimiento Diario")
+        print("10. Volver")
+        
+        op = input("\nSeleccione una opción: ")
+        
+        if op == '1':
+            cass_manager.register_message(session, 
+                input("Ticket ID: "), input("Autor ID: "), input("Mensaje: "))
+            print(">> Mensaje guardado.")
+            
+        elif op == '2':
+            res = cass_manager.get_chat_history(session, input("Ticket ID: "))
+            print_json(res)
+            
+        elif op == '3':
+            cass_manager.update_ticket_status(session, 
+                input("Ticket ID: "), input("Nuevo Estado: "), 
+                input("Agente ID: "), input("Detalles: "))
+            print(">> Estado actualizado.")
+            
+        elif op == '4':
+            res = cass_manager.get_status_history(session, input("Ticket ID: "))
+            print_json(res)
+            
+        elif op == '5':
+            res = cass_manager.get_current_status(session, input("Ticket ID: "))
+            print(f">> Estado Actual: {res}")
+            
+        elif op == '6':
+            cass_manager.register_participation(session, 
+                input("Ticket ID: "), input("Agente ID: "), input("Acción: "))
+            print(">> Participación registrada.")
+            
+        elif op == '7':
+            res = cass_manager.get_participants(session, input("Ticket ID: "))
+            print_json(res)
+            
+        elif op == '8':
+            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            res = cass_manager.get_daily_audit(session, d if d else None)
+            print_json(res)
+
+        elif op == '9':
+            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            res = cass_manager.get_daily_performance(session, d if d else None)
+            print_json(res)
+            
+        elif op == '10':
+            break
+
 def main_menu():
     while True:
         print("\n" + "*"*50)
@@ -209,7 +274,12 @@ def main_menu():
         if opcion == '1':
             menu_mongo()
         elif opcion == '2':
-            menu_cassandra()
+            try:
+                session = connect.create_cassandra_session()
+            except Exception as e:
+                print(f"Error conectando a Cassandra: {e}")
+                session = None
+            menu_cassandra(session)
         elif opcion == '3':
             menu_dgraph()
         elif opcion == '4':
