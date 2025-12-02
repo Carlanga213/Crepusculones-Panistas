@@ -138,7 +138,7 @@ def populate():
                     obj['assigned_to'] = [{'uid': agent_uid}]
                 txn.mutate(pydgraph.Mutation(set_json=json.dumps(obj).encode('utf8')))
 
-            # 2. CASSANDRA (Estado Inicial Base)
+            # 2. CASSANDRA 
 
             if cass_session:
                 cassandra_manager.update_ticket_status(

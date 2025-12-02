@@ -1,10 +1,7 @@
 # Cassandra/schema.py
 
 def create_schema(session):
-    """
-    Crea el Keyspace y las Tablas usando TEXT para los IDs
-    para que sean legibles (ej. 'inc_0001', 'agent_005').
-    """
+
     # 1. Crear keyspace
     session.execute("DROP KEYSPACE IF EXISTS helpdesk_system;")
     
@@ -73,6 +70,7 @@ def create_schema(session):
             PRIMARY KEY (ticket_id, agente_id)
         );
     """)
+
 
     print("✅ Esquema de Cassandra actualizado a TEXT (IDs legibles).")
 
