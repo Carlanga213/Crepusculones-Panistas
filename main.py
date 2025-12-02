@@ -2,10 +2,9 @@ import connect as connect
 import json
 import os
 import sys
-# Importamos el módulo desde la carpeta Dgraph
 from Dgraph import manager as dgraph_manager
-# Importamos Cassandra (si ya tienes el manager)
-# from Cassandra import manager as cassandra_manager
+from Cassandra import manager as cassandra_manager
+from Mongo import manager as mongo_manager
 
 def print_json(data):
     """Ayuda visual para imprimir respuestas JSON bonitas"""
@@ -118,30 +117,25 @@ def menu_dgraph():
         else:
             print("Opción inválida.")
 
-# --- MENÚ MONGODB (Integrado desde menu.py) ---
 def menu_mongo():
-    # Verifica que exista el archivo cliente de mongo
-    mongo_script = os.path.join("Mongo", "client.py")
-
-    # Verifica que exista el archivo en la nueva ubicación
-    if not os.path.exists(mongo_script):
-        print(f"\n[ERROR] No se encontró '{mongo_script}'.")
-        print("Asegúrate de haber movido el archivo 'client.py' a la carpeta 'Mongo'.")
-        input("Presiona Enter para continuar...")
-        return # Regresa al menú principal para evitar errores
+    # Crear conexión DB
+    try:
+        db = connect.create_mongo_db()
+    except Exception as e:
+        print(f"Error conectando a Mongo: {e}")
+        return
 
     while True:
         print("\n" + "="*50)
         print("      MÓDULO MONGODB - GESTIÓN DE DOCUMENTOS")
         print("="*50)
-        # Opciones copiadas de menu.py
-        print("1.  Cargar base de datos (Inicializar)")
+        print("1.  [ADMIN] Cargar datos (Desde JSON)")
         print("2.  Tickets por usuario (ID)")
         print("3.  Tickets por prioridad")
         print("4.  Tickets por operador (ID)")
         print("5.  Tickets por estado")
-        print("6.  Operadores por nivel/tier")
-        print("7.  Buscar tickets por descripción")
+        print("6.  Operadores por nivel")
+        print("7.  Buscar tickets (Texto)")
         print("8.  Tickets abiertos > 7 días")
         print("9.  Usuarios por empresa")
         print("10. Operadores por departamento")
@@ -152,61 +146,44 @@ def menu_mongo():
 
         op = input("\nSeleccione una opción: ")
 
-        # Lógica adaptada de menu.py usando os.system
         if op == "1":
-            os.system("python client.py --load")
-        
+            # Llamamos al populate.py o una función de carga
+            print("Ejecuta 'python populate.py' para cargar datos masivos.")
         elif op == "2":
             uid = input("ID del usuario: ")
-            os.system(f"python client.py --usuario {uid}")
-        
+            mongo_manager.get_tickets_by_user(db, uid)
         elif op == "3":
-            prioridad = input("Prioridad (alta, media, baja): ")
-            os.system(f"python client.py --prioridad {prioridad}")
-        
+            prio = input("Prioridad (alta, media, baja): ")
+            mongo_manager.get_tickets_by_priority(db, prio)
         elif op == "4":
             oid = input("ID del operador: ")
-            os.system(f"python client.py --operador {oid}")
-        
+            mongo_manager.get_tickets_by_operator(db, oid)
         elif op == "5":
-            estado = input("Estado (abierto, cerrado, pendiente): ")
-            os.system(f"python client.py --estado {estado}")
-        
+            est = input("Estado: ")
+            mongo_manager.get_tickets_by_status(db, est)
         elif op == "6":
-            nivel = input("Nivel (tier 1, tier 2, tier 3): ")
-            os.system(f"python client.py --nivel \"{nivel}\"")
-        
+            niv = input("Nivel: ")
+            mongo_manager.get_operators_by_level(db, niv)
         elif op == "7":
-            texto = input("Texto a buscar en descripción: ")
-            os.system(f"python client.py --search \"{texto}\"")
-        
+            txt = input("Texto a buscar: ")
+            mongo_manager.search_tickets(db, txt)
         elif op == "8":
-            print(">> Buscando tickets abiertos con más de 7 días...")
-            os.system("python client.py --old")
-        
+            mongo_manager.get_old_open_tickets(db)
         elif op == "9":
-            empresa = input("Nombre de la empresa: ")
-            os.system(f"python client.py --empresa \"{empresa}\"")
-        
+            emp = input("Empresa: ")
+            mongo_manager.get_users_by_company(db, emp)
         elif op == "10":
-            depto = input("Departamento: ")
-            os.system(f"python client.py --departamento \"{depto}\"")
-        
+            dep = input("Departamento: ")
+            mongo_manager.get_operators_by_dept(db, dep)
         elif op == "11":
-            turno = input("Turno (matutino/vespertino): ")
-            os.system(f"python client.py --turno \"{turno}\"")
-        
+            tur = input("Turno: ")
+            mongo_manager.get_operators_by_shift(db, tur)
         elif op == "12":
-            print(">> Ejecutando Pipeline de agregación por Estado...")
-            os.system("python client.py --pipeline_estado")
-            
+            mongo_manager.pipeline_count_by_status(db)
         elif op == "13":
-            print(">> Ejecutando Pipeline de agregación por Prioridad...")
-            os.system("python client.py --pipeline_prioridad")
-
+            mongo_manager.pipeline_count_by_priority(db)
         elif op == "14":
             break
-        
         else:
             print("Opción no válida.")
 
