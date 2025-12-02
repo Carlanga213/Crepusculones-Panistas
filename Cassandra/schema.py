@@ -12,7 +12,7 @@ def create_schema(session):
     
     session.set_keyspace('helpdesk_system')
 
-    # 2. Tabla: Mensajes de Chat por Ticket (Req 1, 2)
+    # 2. Tabla: Mensajes de Chat por Ticket 
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS mensajes_ticket (
@@ -24,7 +24,7 @@ def create_schema(session):
         ) WITH CLUSTERING ORDER BY (fecha_evento ASC);
     """)
 
-    # 3. Tabla: Historial de Estados (Req 3, 4, 5)
+    # 3. Tabla: Historial de Estados
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS historial_estados (
@@ -37,7 +37,7 @@ def create_schema(session):
         ) WITH CLUSTERING ORDER BY (fecha_cambio DESC);
     """)
 
-    # 4. Tabla: Rendimiento de Operador (Req 10)
+    # 4. Tabla: Rendimiento de Operador 
 
     session.execute("""
         CREATE TABLE IF NOT EXISTS rendimiento_operador (
@@ -49,7 +49,7 @@ def create_schema(session):
         );
     """)
 
-    # 5. Tabla: Actividades Diarias de Operador (Req 8, 9)
+    # 5. Tabla: Actividades Diarias de Operador
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS bitacora_actividades (
@@ -63,7 +63,7 @@ def create_schema(session):
         ) WITH CLUSTERING ORDER BY (hora DESC);
     """)
 
-    # 6. Tabla: Agentes que participaron en el ticket (Req 6, 7)
+    # 6. Tabla: Agentes que participaron en el ticket
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS participacion_agentes (
@@ -76,4 +76,4 @@ def create_schema(session):
         );
     """)
 
-    print("✅ Esquema de Cassandra creado correctamente.")
+    print("Esquema de Cassandra creado correctamente.")
