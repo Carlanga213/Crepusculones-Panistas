@@ -175,25 +175,37 @@ def populate():
                     obj['assigned_to'] = [{'uid': agent_uid}]
                 txn.mutate(pydgraph.Mutation(set_json=json.dumps(obj).encode('utf8')))
 
+
+
+
+
             # Cassandra 
 
             if cass_session:
+
+                # inicializa registros y guarda participacion inicial de agente
                 cassandra_manager.update_ticket_status(
                     cass_session, 
                     row['incident_id'], 
                     row['status'], 
                     row['assigned_to'] if row['assigned_to'] else "system", 
-                    "Estado inicial (Importación)"
+                    "Estado inicial"
                 )
                 if row['assigned_to']:
                     cassandra_manager.register_participation(
-                        cass_session, row['incident_id'], row['assigned_to'], "Asignación inicial"
+                        cass_session, 
+                        row['incident_id'], 
+                        row['assigned_to'], 
+                        "Asignación inicial"
                     )
                 count_cass_init += 1
 
         txn.commit()
         print(f"[Dgraph] Incidentes cargados.")
         print(f"[Cassandra] Estados base sincronizados: {count_cass_init}")
+
+
+
 
         # Carga historial de tickets cassandra
         if cass_session:
@@ -208,6 +220,11 @@ def populate():
                 )
             print(f"{len(chats)} mensajes de chat insertados.")
 
+
+
+
+
+
             print("\n--- Cargando Historial de Estados (Cassandra) ---")
             # llena historial, bitácora y rendimiento
             history = load_csv('status_history.csv')
@@ -219,7 +236,7 @@ def populate():
                     row['agent_id'],
                     row['details']
                 )
-                # También registramos participación explícita
+                # También registra participación explícita
                 cassandra_manager.register_participation(
                     cass_session,
                     row['ticket_id'],
@@ -227,6 +244,8 @@ def populate():
                     f"Cambio de estado a {row['status']}"
                 )
             print(f"{len(history)} eventos de historial insertados.")
+
+
 
     except Exception as e:
         print(f"\n[ERROR] Falló la carga: {e}")
