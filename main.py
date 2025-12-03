@@ -121,7 +121,6 @@ def menu_dgraph():
         if op == '1':
             inc = input("ID Incidencia: ")
             ag = input("ID Agente: ")
-            # CORRECCIÓN: usar dgraph_manager en lugar de manager
             if dgraph_manager.assign_incident(client, inc, ag):
                 print(">> Asignación exitosa.")
             else:
