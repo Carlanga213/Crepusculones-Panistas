@@ -1,38 +1,4 @@
-import csv
-import os
 from datetime import datetime
-
-# ==========================================
-#      CONFIGURACIÓN Y AYUDAS
-# ==========================================
-
-# Caché para no leer el CSV a cada rato
-AGENT_NAMES = {}
-
-def load_agent_names():
-    """Carga los nombres de los agentes a memoria."""
-    global AGENT_NAMES
-    # Si ya los tenemos, no hacemos nada
-    if AGENT_NAMES: 
-        return
-    path = 'data/agents.csv'
-    if not os.path.exists(path): 
-        return
-    try:
-        with open(path, mode='r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                # Guardamos ID -> Nombre
-                AGENT_NAMES[row['agent_id']] = row['name']
-    except: 
-        pass
-
-# obtiene nombre de agente segun su ID
-def get_agent_name(id_str):
-    load_agent_names()
-    return AGENT_NAMES.get(str(id_str), str(id_str))
-
-
 
 
 # Requerimientos
@@ -44,10 +10,8 @@ def register_message(session, ticket_id, autor_id, contenido):
         VALUES (%s, now(), %s, %s)
     """
     session.execute(query, (ticket_id, autor_id, contenido))
-    
     # registra en historial
     log_activity(session, autor_id, ticket_id, "Mensaje Chat", "Enviado")
-
 
 
 
@@ -57,10 +21,10 @@ def get_chat_history(session, ticket_id):
     rows = session.execute(query, [ticket_id])
     return [
         {
-            "fecha": r.fecha_evento, 
-            "autor": get_agent_name(r.autor), 
+            "fecha": r.fecha_evento,
+            "autor": r.autor,
             "mensaje": r.contenido
-        } 
+        }
         for r in rows
     ]
 
@@ -88,10 +52,11 @@ def get_status_history(session, ticket_id):
     rows = session.execute(query, [ticket_id])
     return [
         {
-            "fecha": r.fecha_cambio, 
-            "estado": r.estado, 
-            "operador": get_agent_name(r.operador_que_actualizo)
-        } 
+            "fecha": r.fecha_cambio,
+            "estado": r.estado,
+            "operador": r.operador_que_actualizo,
+            "detalles": r.detalles_actualizacion
+        }
         for r in rows
     ]
 
@@ -109,15 +74,14 @@ def get_current_status(session, ticket_id):
 
 
 
+
 # 6 registra que agente trabajo en un ticket
 def register_participation(session, ticket_id, agent_id, action_detail):
-    load_agent_names()
-    real_name = AGENT_NAMES.get(agent_id, f"Agente {agent_id}")
     query = """
         INSERT INTO participacion_agentes (ticket_id, agente_id, nombre_operador, fecha_ultima_accion, detalle_accion) 
         VALUES (%s, %s, %s, toTimestamp(now()), %s)
     """
-    session.execute(query, (ticket_id, agent_id, real_name, action_detail))
+    session.execute(query, (ticket_id, agent_id, str(agent_id), action_detail))
 
 
 
@@ -125,12 +89,12 @@ def register_participation(session, ticket_id, agent_id, action_detail):
 def get_participants(session, ticket_id):
     query = "SELECT agente_id, nombre_operador, detalle_accion FROM participacion_agentes WHERE ticket_id = %s"
     rows = session.execute(query, [ticket_id])
-    
+
     return [
         {
-            "agente": r.nombre_operador or get_agent_name(r.agente_id), 
+            "agente": r.nombre_operador,
             "accion": r.detalle_accion
-        } 
+        }
         for r in rows
     ]
 
@@ -156,17 +120,17 @@ def log_activity(session, operator_id, ticket_id, actividad, detalle):
 # 9 Muestra todas las actividades del dia
 def get_daily_audit(session, date_str=None):
     target_date = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else datetime.now().date()
- 
+
     query = "SELECT * FROM bitacora_actividades WHERE dia = %s"
     rows = session.execute(query, [target_date])
-    
+
     return [
         {
-            "hora": r.hora, 
-            "operador": get_agent_name(r.operador), 
-            "actividad": r.actividad, 
+            "hora": r.hora,
+            "operador": r.operador,
+            "actividad": r.actividad,
             "detalle": r.detalle_accion
-        } 
+        }
         for r in rows
     ]
 
@@ -196,14 +160,15 @@ def update_performance(session, operator_id, atendido=False, cerrado=False):
 # 10 Muestra rendimiento de operadores ( tickets cerrados por operador )
 def get_daily_performance(session, date_str=None):
     target_date = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else datetime.now().date()
+
     query = "SELECT * FROM rendimiento_operador WHERE fecha = %s"
     rows = session.execute(query, [target_date])
-    
+
     return [
         {
-            "operador": get_agent_name(r.operador), 
-            "atendidos": r.tickets_atendidos, 
+            "operador": r.operador,
+            "atendidos": r.tickets_atendidos,
             "cerrados": r.tickets_cerrados
-        } 
+        }
         for r in rows
     ]

@@ -22,7 +22,7 @@ def menu_cassandra(session):
         print("5.  Ver estado actual")
         print("6.  Registrar participación agente")
         print("7.  Consultar participantes ticket")
-        print("8.  Auditoría diaria")
+        print("8.  Actividades diaria")
         print("9.  Reporte de rendimiento diario")
         print("10. Volver")
         
