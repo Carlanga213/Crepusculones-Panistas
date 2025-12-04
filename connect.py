@@ -9,16 +9,27 @@ def create_client_stub(host='localhost', port='9080'):
 def create_client(client_stub):
     return pydgraph.DgraphClient(client_stub)
 
+
+
+
 # --- CASSANDRA ---
-def create_cassandra_session():
-    cluster = Cluster(['127.0.0.1'])
-    session = cluster.connect()
-    # Aseguramos que el keyspace exista, si no, se crea en schema.py
+def create_cassandra_session(hosts=['localhost'],port=9042):
     try:
-        session.set_keyspace('helpdesk_system')
-    except:
-        pass 
-    return session
+        cluster = Cluster(hosts, port=port)
+        session= cluster.connect()
+        try:
+            session.set_keyspace('helpdesk_system')
+        except:
+            pass
+        return session
+    except Exception as e:
+        print(f"Error conectando a cassandra: {e}")
+        return None
+
+
+
+
+
 
 # --- MONGODB ---
 def create_mongo_db():

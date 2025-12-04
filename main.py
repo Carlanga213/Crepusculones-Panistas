@@ -12,8 +12,10 @@ def json_uuid_serializer(obj):
         return str(obj)
     raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
 
+
+
+#imprime resultados legibles
 def print_json(data):
-    """Ayuda visual para imprimir respuestas JSON bonitas"""
     print(json.dumps(data, indent=2, ensure_ascii=False, default=json_uuid_serializer))
 
 
@@ -144,8 +146,8 @@ def menu_mongo():
         print("9.  Usuarios por empresa")
         print("10. Operadores por departamento")
         print("11. Operadores por turno")
-        print("12. Pipeline: Conteo por estado")
-        print("13. Pipeline: Conteo por prioridad")
+        print("12. Conteo por estado")
+        print("13. Conteo por prioridad")
         print("14. Volver al Menú Principal")
 
         op = input("\nSeleccione una opción: ")
@@ -200,15 +202,15 @@ def menu_cassandra(session):
         print("\n" + "="*50)
         print("      MÓDULO CASSANDRA - TRAZABILIDAD Y CHAT")
         print("="*50)
-        print("1.  Nuevo Mensaje (Chat)")
-        print("2.  Ver Historial Chat Ticket")
-        print("3.  Cambiar Estado Ticket")
-        print("4.  Ver Historial Estados Ticket")
-        print("5.  Ver Estado Actual (Rápido)")
-        print("6.  Registrar Participación Agente")
-        print("7.  Consultar Participantes Ticket")
-        print("8.  Auditoría Diaria")
-        print("9.  Reporte Rendimiento Diario")
+        print("1.  Nuevo mensaje")
+        print("2.  Ver historial chat ticket")
+        print("3.  Cambiar estado ticket")
+        print("4.  Ver historial estados ticket")
+        print("5.  Ver estado actual de ticket")
+        print("6.  Registrar participación agente")
+        print("7.  Consultar participantes ticket")
+        print("8.  Actividades diarias")
+        print("9.  Reporte rendimiento operadores")
         print("10. Volver")
         
         op = input("\nSeleccione una opción: ")
@@ -216,7 +218,7 @@ def menu_cassandra(session):
         if op == '1':
             cass_manager.register_message(session, 
                 input("Ticket ID: "), input("Autor ID: "), input("Mensaje: "))
-            print(">> Mensaje guardado.")
+            print("Mensaje guardado.")
             
         elif op == '2':
             res = cass_manager.get_chat_history(session, input("Ticket ID: "))
@@ -226,7 +228,7 @@ def menu_cassandra(session):
             cass_manager.update_ticket_status(session, 
                 input("Ticket ID: "), input("Nuevo Estado: "), 
                 input("Agente ID: "), input("Detalles: "))
-            print(">> Estado actualizado.")
+            print("Estado actualizado.")
             
         elif op == '4':
             res = cass_manager.get_status_history(session, input("Ticket ID: "))
@@ -234,24 +236,24 @@ def menu_cassandra(session):
             
         elif op == '5':
             res = cass_manager.get_current_status(session, input("Ticket ID: "))
-            print(f">> Estado Actual: {res}")
+            print(f"Estado Actual: {res}")
             
         elif op == '6':
             cass_manager.register_participation(session, 
                 input("Ticket ID: "), input("Agente ID: "), input("Acción: "))
-            print(">> Participación registrada.")
+            print("Participación registrada.")
             
         elif op == '7':
             res = cass_manager.get_participants(session, input("Ticket ID: "))
             print_json(res)
             
         elif op == '8':
-            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            d = input("Fecha (YYYY-MM-DD): ")
             res = cass_manager.get_daily_audit(session, d if d else None)
             print_json(res)
 
         elif op == '9':
-            d = input("Fecha (YYYY-MM-DD) [Enter para hoy]: ")
+            d = input("Fecha (YYYY-MM-DD): ")
             res = cass_manager.get_daily_performance(session, d if d else None)
             print_json(res)
             

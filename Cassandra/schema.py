@@ -1,10 +1,7 @@
-# Cassandra/schema.py
-
 def create_schema(session):
-    """
-    Crea el Keyspace y las Tablas requeridas.
-    """
-    # 1. Crear Keyspace
+
+
+    # crea keyspace
     session.execute("""
         CREATE KEYSPACE IF NOT EXISTS helpdesk_system 
         WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
@@ -12,7 +9,7 @@ def create_schema(session):
     
     session.set_keyspace('helpdesk_system')
 
-    # 2. Tabla: Mensajes de Chat por Ticket 
+    # Mensajes de chat por ticket 
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS mensajes_ticket (
@@ -24,7 +21,7 @@ def create_schema(session):
         ) WITH CLUSTERING ORDER BY (fecha_evento ASC);
     """)
 
-    # 3. Tabla: Historial de Estados
+    # historial de estados
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS historial_estados (
@@ -37,7 +34,7 @@ def create_schema(session):
         ) WITH CLUSTERING ORDER BY (fecha_cambio DESC);
     """)
 
-    # 4. Tabla: Rendimiento de Operador 
+    # rendimiento de operador 
 
     session.execute("""
         CREATE TABLE IF NOT EXISTS rendimiento_operador (
@@ -49,7 +46,7 @@ def create_schema(session):
         );
     """)
 
-    # 5. Tabla: Actividades Diarias de Operador
+    # actividades diarias de operador
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS bitacora_actividades (
@@ -63,7 +60,7 @@ def create_schema(session):
         ) WITH CLUSTERING ORDER BY (hora DESC);
     """)
 
-    # 6. Tabla: Agentes que participaron en el ticket
+    # agentes que participaron en el ticket
     
     session.execute("""
         CREATE TABLE IF NOT EXISTS participacion_agentes (

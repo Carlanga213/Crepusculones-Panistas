@@ -9,8 +9,7 @@ import pydgraph
 # Importamos los managers y esquemas
 from Dgraph import manager as dgraph_manager
 from Cassandra import manager as cass_manager
-from Cassandra import schema as cass_schema  # Necesario para recrear las tablas
-
+from Cassandra import schema as cass_schema 
 DATA_DIR = 'data'
 
 # --- UTILIDADES ---
@@ -76,7 +75,7 @@ def populate_mongo(db):
 
 # --- DGRAPH ---
 def populate_dgraph(client):
-    print("\n>>> 2. DGRAPH: Reiniciando grafo...")
+    print("\n DGRAPH: Reiniciando grafo...")
     
     # 1. Limpiar TODOS los datos y esquema antiguos
     op = pydgraph.Operation(drop_op="DATA")
@@ -173,26 +172,34 @@ def populate_dgraph(client):
     finally:
         txn.discard()
 
+
+
+
+
+
+
+
 # --- CASSANDRA  ---
 def populate_cassandra(session):
-    print("\n>>> 3. CASSANDRA: Reiniciando Keyspace...")
+    print("\n CASSANDRA: Reiniciando Keyspace...")
     
-    # 1. Borrar Keyspace existente para limpiar todo
+    # borra keyspace existente para limpiar todo
     try:
         session.execute("DROP KEYSPACE IF EXISTS helpdesk_system")
-        print(" -> Keyspace antiguo eliminado.")
+        print("Keyspace antiguo eliminado")
     except Exception as e:
-        print(f" !! Advertencia borrando keyspace: {e}")
+        print(f"borrando keyspace: {e}")
 
-    # 2. Recrear Esquema (Keyspace y Tablas)
-    # Esto llama a la función que ya tienes en Cassandra/schema.py
+    # recrea esquema
     cass_schema.create_schema(session)
     
-    # 3. Llenar datos
-    # Historial de Chat
+
+    # llenado de datos
+
+    # Historial de chat
     chats = load_csv('chat_history.csv')
     if chats:
-        print(f" -> Insertando {len(chats)} mensajes de chat...")
+        print(f"Insertando {len(chats)} mensajes de chat")
         for row in chats:
             cass_manager.register_message(
                 session, 
@@ -201,10 +208,13 @@ def populate_cassandra(session):
                 row['message']
             )
 
-    # Historial de Estados
+
+
+
+    # Historial de estados
     statuses = load_csv('status_history.csv')
     if statuses:
-        print(f" -> Insertando {len(statuses)} cambios de estado...")
+        print(f"Insertando {len(statuses)} cambios de estado...")
         for row in statuses:
             cass_manager.update_ticket_status(
                 session, 
@@ -213,6 +223,9 @@ def populate_cassandra(session):
                 row['agent_id'], 
                 row['details']
             )
+
+
+
 
 def main():
     print("--- INICIANDO CARGA MASIVA DE DATOS (RESET TOTAL) ---")
@@ -239,7 +252,7 @@ def main():
     except Exception as e:
         print(f"[ERROR Cassandra] {e}")
 
-    print("\n[FIN] Proceso completado. Bases de datos listas.")
+    print("\nProceso completado. Bases de datos listas.")
 
 if __name__ == '__main__':
     main()
